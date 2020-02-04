@@ -1,0 +1,10 @@
+version: "3.2"
+
+services:
+  backend:
+    image: node:10
+    volumes:
+      - .:/server
+    command: sh -c 'cd /server && yarn && yarn start:dev'
+    env_file:
+      - .env

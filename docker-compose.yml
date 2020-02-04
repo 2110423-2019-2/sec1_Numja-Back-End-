@@ -1,0 +1,8 @@
+version: "3.2"
+
+services:
+  backend:
+    container_name: numja-backend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
