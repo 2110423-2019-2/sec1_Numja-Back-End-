@@ -24,8 +24,6 @@ Please follow this workflow when bugs found and/or requesting new features:
 4. Create Pull request to `upstream/dev` (other branches are not allowed, unless approved by reviewers).
 5. Wait for code review.
 
-![](workflow.jpg)
-
 ## Commit Message Convention
 We have very precise rules over how our git commit messages can be formatted. This leads to **more readable messages** that are **easy to follow** when looking through the project history.
 

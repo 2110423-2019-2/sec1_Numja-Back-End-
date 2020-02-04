@@ -1,11 +1,13 @@
 # sec1_Numja_Back-End-
 
 This project is backend project for Software Engineering course (2019/2). Here are guidelines we would like you to follow:
+- [Member](#members)
+- [Contributing](#contributing)
 - [Getting Started](#getting-start)
 - [Adding dependencies](#adding-dependencies)
-- [Running the tests](#running-the-tests)
+- [Running tests](#running-tests)
 - [Formatting Code](#formatting-code)
-- [Contributing](#contributing)
+- [Documentation](#documentation)
 
 ## Members
  
@@ -44,13 +46,13 @@ A step by step series of examples that tell you how to get a development env run
 2. Clone forked repository to your machine
 
 ```
-git clone https://github.com/<your-github-user>/sec1_Numja.git
+git clone https://github.com/<your-github-user>/sec1_Numja-Back-End-.git
 ```
 
 3. Install dependencies
 
 ```
-yarn            // for yarn
+yarn
 ```
 
 4. Create file named `.env`, then copy `example.env` and fill the details
@@ -76,7 +78,7 @@ Some dependencies should be added in devDependencies. To do that, run the follow
 yarn add -D <package-name>
 ```
 
-## Running the tests
+## Running tests
 
 To run tests only once, run:
 ```
@@ -93,3 +95,7 @@ To format codes, run:
 ```
 yarn format
 ```
+
+## Documentation
+
+To open API docs after start server, visit `localhost:3000/api`.
