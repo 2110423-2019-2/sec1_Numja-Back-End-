@@ -3,6 +3,7 @@
 This project is backend project for Software Engineering course (2019/2). Here are guidelines we would like you to follow:
 - [Member](#members)
 - [Contributing](#contributing)
+- [Build with](@build-with)
 - [Getting Started](#getting-start)
 - [Adding dependencies](#adding-dependencies)
 - [Running tests](#running-tests)
@@ -24,6 +25,13 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 
 See also the list of [contributors](https://github.com/2110423-2019-2/sec1_Numja-Back-End-/graphs/contributors) who participated in this project.
 
+## Build with
+
+This project is built with:
+* [MongoDB](https://www.mongodb.com/) - NoSQL database
+* [NestJS](https://nestjs.com/) - A progressive Node.js framework for building efficient, reliable and scalable server-side applications
+* [`nestjs-typegoose`](https://github.com/kpfromer/nestjs-typegoose) - Typegoose equivalant for [`@nestjs/mongoose`](https://docs.nestjs.com/techniques/mongodb), removes the need for having a model interface
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
@@ -33,7 +41,6 @@ These instructions will get you a copy of the project up and running on your loc
 You need the following softwares to run this project:
 * [Node.js](https://nodejs.org/en/) - Running javascript locally
 * [`yarn`](https://yarnpkg.com/en/) - Node.js package manager
-* [NestJS](https://nestjs.com/) - A progressive Node.js framework for building efficient, reliable and scalable server-side applications.
 * [Docker](https://www.docker.com/) - Container platform
 * [`docker-compose`](https://docs.docker.com/compose/) - A tool for defining and running multi-container Docker applications
 
