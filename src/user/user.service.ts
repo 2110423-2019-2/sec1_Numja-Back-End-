@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ReturnModelType } from '@typegoose/typegoose';
 import { User } from '../model/user.model';
 import { InjectModel } from 'nestjs-typegoose';
+import { hashSync } from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -21,8 +22,9 @@ export class UserService {
         return this.model.findOne(conditions).exec();
     }
 
-    create(userDTO: User): Promise<User> {
-        const user = new this.model(userDTO);
+    create({ password, ...userDTO }: User): Promise<User> {
+        password = hashSync(password, 12);
+        const user = new this.model({ ...userDTO, password });
         return user.save();
     }
 }
