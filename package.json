@@ -38,6 +38,7 @@
     "@nestjs/cli": "^6.9.0",
     "@nestjs/schematics": "^6.7.0",
     "@nestjs/testing": "^6.7.1",
+    "@types/bcrypt": "^3.0.0",
     "@types/express": "^4.17.1",
     "@types/jest": "^24.0.18",
     "@types/mongoose": "^5.7.0",
