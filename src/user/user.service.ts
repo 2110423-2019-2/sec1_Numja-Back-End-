@@ -18,7 +18,10 @@ export class UserService {
         return this.model.findById(id).exec();
     }
 
-    findOne(conditions: any): Promise<User> {
+    findOne(conditions: any, password?: boolean): Promise<User> {
+        if (password) {
+            return this.model.findOne(conditions, '+password').exec();
+        }
         return this.model.findOne(conditions).exec();
     }
 
