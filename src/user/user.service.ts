@@ -20,4 +20,9 @@ export class UserService {
     findOne(conditions: any): Promise<User> {
         return this.model.findOne(conditions).exec();
     }
+
+    create(userDTO: User): Promise<User> {
+        const user = new this.model(userDTO);
+        return user.save();
+    }
 }
