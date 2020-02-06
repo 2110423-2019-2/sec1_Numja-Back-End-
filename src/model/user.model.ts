@@ -2,7 +2,6 @@ import { prop, mongoose } from '@typegoose/typegoose';
 import { UserGender, UserRole, UserStatus } from '../enum/user.enum';
 
 export class User {
-    @prop()
     _id?: mongoose.Types.ObjectId;
 
     get id() {
