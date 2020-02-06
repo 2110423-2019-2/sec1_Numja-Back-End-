@@ -22,4 +22,8 @@ export class ConfigService implements TypegooseOptionsFactory {
             useUnifiedTopology: true,
         };
     }
+
+    get secret(): string {
+        return this.getEnv('SECRET');
+    }
 }
