@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { ConfigModule } from './config/config.module';
 import { TypegooseModule } from 'nestjs-typegoose';
 import { ConfigService } from './config/config.service';
+import { UserModule } from './user/user.module';
 
 @Module({
     imports: [
@@ -11,6 +12,7 @@ import { ConfigService } from './config/config.service';
             useClass: ConfigService,
         }),
         ConfigModule,
+        UserModule,
     ],
     controllers: [AppController],
     providers: [AppService],
