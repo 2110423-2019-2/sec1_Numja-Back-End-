@@ -1,7 +1,14 @@
-import { prop } from '@typegoose/typegoose';
+import { prop, mongoose } from '@typegoose/typegoose';
 import { UserGender, UserRole, UserStatus } from '../enum/user.enum';
 
 export class User {
+    @prop()
+    _id?: mongoose.Types.ObjectId;
+
+    get id() {
+        return this._id;
+    }
+
     @prop({ required: true })
     firstName: string;
 
