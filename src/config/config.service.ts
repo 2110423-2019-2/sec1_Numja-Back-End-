@@ -3,9 +3,11 @@ import {
     TypegooseOptionsFactory,
     TypegooseModuleOptions,
 } from 'nestjs-typegoose';
+import { JwtOptionsFactory, JwtModuleOptions } from '@nestjs/jwt';
 
 @Injectable()
-export class ConfigService implements TypegooseOptionsFactory {
+export class ConfigService
+    implements TypegooseOptionsFactory, JwtOptionsFactory {
     getEnv(name: string): string {
         const env = process.env[name];
         if (env) {
@@ -21,5 +23,18 @@ export class ConfigService implements TypegooseOptionsFactory {
             useFindAndModify: false,
             useUnifiedTopology: true,
         };
+    }
+
+    createJwtOptions(): JwtModuleOptions {
+        return {
+            secret: this.secret,
+            signOptions: {
+                expiresIn: '60s',
+            },
+        };
+    }
+
+    get secret(): string {
+        return this.getEnv('SECRET');
     }
 }
