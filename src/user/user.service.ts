@@ -25,6 +25,10 @@ export class UserService {
         return this.model.findOne(conditions).exec();
     }
 
+    exists(id: string): Promise<boolean> {
+        return this.model.exists({ _id: id });
+    }
+
     create({ password, ...userDTO }: User): Promise<User> {
         password = hashSync(password, 12);
         const user = new this.model({ ...userDTO, password });
