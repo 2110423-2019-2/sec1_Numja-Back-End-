@@ -6,6 +6,7 @@ import { TypegooseModule } from 'nestjs-typegoose';
 import { ConfigService } from './config/config.service';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { JwtMiddleware } from './middlewares/jwt.middleware';
 import { AdminModule } from './admin/admin.module';
 import { JwtMiddleware } from './middlewares/jwt.middleware';
 import { SystemReportModule } from './system-report/system-report.module';
