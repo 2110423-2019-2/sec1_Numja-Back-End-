@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ReturnModelType } from '@typegoose/typegoose';
 import { User } from '../model/user.model';
 import { InjectModel } from 'nestjs-typegoose';
-import { hashSync } from 'bcrypt';
+import { hashSync } from 'bcryptjs';
 
 @Injectable()
 export class UserService {
