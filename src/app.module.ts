@@ -6,6 +6,7 @@ import { TypegooseModule } from 'nestjs-typegoose';
 import { ConfigService } from './config/config.service';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { AdminModule } from './admin/admin.module';
 import { JwtMiddleware } from './middlewares/jwt.middleware';
 
 @Module({
@@ -16,6 +17,7 @@ import { JwtMiddleware } from './middlewares/jwt.middleware';
         ConfigModule,
         UserModule,
         AuthModule,
+        AdminModule
     ],
     controllers: [AppController],
     providers: [AppService],
