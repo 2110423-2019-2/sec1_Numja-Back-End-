@@ -8,9 +8,15 @@ import { AdminService } from './admin.service';
 export class AdminController {
     constructor(private readonly service: AdminService) {}
 
-    @Patch('update')
-    async updateUserStatus(
-        @Body() statusDTO: UpdateStatusDTO) {
-        return this.service.updateStatus(statusDTO)
+    @Patch('suspend')
+    async suspend(
+        @Body() idDTO: UpdateStatusDTO) {
+        this.service.suspend(idDTO)
+    }
+
+    @Patch('activate')
+    async activate(
+        @Body() idDTO: UpdateStatusDTO) {
+        this.service.reactivate(idDTO)
     }
 }
