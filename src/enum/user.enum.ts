@@ -11,5 +11,5 @@ export enum UserGender {
 
 export enum UserStatus {
     Active = 'active',
-    Suspended = 'suspended',
+    Suspended = 'suspended'
 }
