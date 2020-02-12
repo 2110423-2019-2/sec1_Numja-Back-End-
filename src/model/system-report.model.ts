@@ -18,5 +18,5 @@ export class SystemReport {
 
     @ApiProperty()
     @prop({ required: true })
-    reportedBy: string;
+    reporterUserId: string;
 }
