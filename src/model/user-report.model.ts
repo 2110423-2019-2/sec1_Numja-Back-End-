@@ -18,9 +18,9 @@ export class UserReport {
 
     @ApiProperty()
     @prop({ required: true })
-    reportedBy: string;
+    reporterUserId: string;
 
     @ApiProperty()
     @prop({ required: true })
-    reportedUser: string;
+    reportedUserId: string;
 }
