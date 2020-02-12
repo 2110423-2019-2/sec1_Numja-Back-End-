@@ -8,3 +8,5 @@ services:
     command: sh -c 'cd /server && yarn && yarn start:dev'
     env_file:
       - .env
+    environment:
+      NODE_ENV: development
