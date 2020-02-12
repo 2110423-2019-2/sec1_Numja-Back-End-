@@ -1,22 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { ReturnModelType } from '@typegoose/typegoose';
-import { User } from '../model/user.model';
-import { InjectModel } from 'nestjs-typegoose';
 import { UserStatus } from '../enum/user.enum';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class AdminService {
-    constructor(
-        @InjectModel(User) private readonly model: ReturnModelType<typeof User>,
-    ) {}
+    constructor(private readonly userService: UserService) {}
 
     suspend(id: string) {
-        this.model
-            .findByIdAndUpdate(id, { status: UserStatus.Suspended })
-            .exec();
+        return this.userService.update(id, { status: UserStatus.Suspended });
     }
 
     reactivate(id: string) {
-        this.model.findByIdAndUpdate(id, { status: UserStatus.Active }).exec();
+        return this.userService.update(id, { status: UserStatus.Active });
     }
 }
