@@ -10,7 +10,7 @@ export class AdminService {
         return this.userService.update(id, { status: UserStatus.Suspended });
     }
 
-    reactivate(id: string) {
+    activate(id: string) {
         return this.userService.update(id, { status: UserStatus.Active });
     }
 }
