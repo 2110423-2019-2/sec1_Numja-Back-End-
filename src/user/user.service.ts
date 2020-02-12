@@ -34,4 +34,8 @@ export class UserService {
         const user = new this.model({ ...userDTO, password });
         return user.save();
     }
+
+    update(id: string, userDTO: Partial<User>): Promise<User> {
+        return this.model.findByIdAndUpdate(id, userDTO, { new: true }).exec();
+    }
 }
