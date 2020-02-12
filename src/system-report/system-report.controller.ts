@@ -6,20 +6,21 @@ import { AuthGuard } from '../guards/auth.guard';
 
 @ApiBearerAuth()
 @ApiTags('Report')
+@UseGuards(AuthGuard)
 @Controller('report/system')
 export class SystemReportController {
     constructor(private readonly service: SystemReportService) {}
-    @UseGuards(AuthGuard)
+
     @Get()
     all() {
         return this.service.find();
     }
-    @UseGuards(AuthGuard)
+
     @Get(':id')
     one(@Param('id') reportId: string) {
         return this.service.findById(reportId);
     }
-    @UseGuards(AuthGuard)
+
     @Post()
     create(@Body() report: SystemReport) {
         return this.service.create(report);
