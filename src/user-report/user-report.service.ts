@@ -10,6 +10,12 @@ export class UserReportService {
         private readonly model: ReturnModelType<typeof UserReport>,
     ) {}
 
+    find(): Promise<UserReport[]> {
+        return this.model.find().exec();
+    }
+    findById(reportId: string): Promise<UserReport> {
+        return this.model.findById(reportId).exec();
+    }
     create(reportDTO: UserReport): Promise<UserReport> {
         const report = new this.model(reportDTO);
         return report.save();

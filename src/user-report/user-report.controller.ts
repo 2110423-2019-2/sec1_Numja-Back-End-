@@ -1,6 +1,5 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from '../guards/auth.guard';
 import { UserReportService } from './user-report.service';
 import { UserReport } from '../model/user-report.model';
 
@@ -10,8 +9,15 @@ import { UserReport } from '../model/user-report.model';
 export class UserReportController {
     constructor(private readonly service: UserReportService) {}
 
+    @Get()
+    all() {
+        return this.service.find();
+    }
+    @Get(':id')
+    one(@Param('id') reportId: string) {
+        return this.service.findById(reportId);
+    }
     @Post()
-    // @UseGuards(AuthGuard) // Not yet working
     create(@Body() report: UserReport) {
         return this.service.create(report);
     }

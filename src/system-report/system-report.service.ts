@@ -9,7 +9,12 @@ export class SystemReportService {
         @InjectModel(SystemReport)
         private readonly model: ReturnModelType<typeof SystemReport>,
     ) {}
-
+    find(): Promise<SystemReport[]> {
+        return this.model.find().exec();
+    }
+    findById(reportId: string): Promise<SystemReport> {
+        return this.model.findById(reportId).exec();
+    }
     create(reportDTO: SystemReport): Promise<SystemReport> {
         const report = new this.model(reportDTO);
         return report.save();
