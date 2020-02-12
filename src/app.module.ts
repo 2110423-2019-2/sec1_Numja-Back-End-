@@ -19,7 +19,6 @@ import { UserReportModule } from './user-report/user-report.module';
         ConfigModule,
         UserModule,
         AuthModule,
-        AdminModule
         SystemReportModule,
         UserReportModule,
         AdminModule,
