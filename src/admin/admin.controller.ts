@@ -7,13 +7,13 @@ import { AdminService } from './admin.service';
 export class AdminController {
     constructor(private readonly service: AdminService) {}
 
-    @Patch('suspend/:id')
-    async suspend(@Param('id') id: string) {
-        this.service.suspend(id);
+    @Patch('suspend')
+    suspend(@Body('id') id: string) {
+        return this.service.suspend(id);
     }
 
-    @Patch('activate/:id')
-    async activate(@Param('id') id: string) {
-        this.service.reactivate(id);
+    @Patch('activate')
+    activate(@Body('id') id: string) {
+        return this.service.reactivate(id);
     }
 }
