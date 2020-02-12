@@ -24,7 +24,7 @@ export class UserService {
         }
         return this.model.findOne(conditions).exec();
     }
-    
+
     exists(id: string): Promise<boolean> {
         return this.model.exists({ _id: id });
     }
@@ -36,6 +36,6 @@ export class UserService {
     }
 
     update(id: string, userDTO: Partial<User>): Promise<User> {
-        return this.model.findByIdAndUpdate(id, userDTO, { new: true}).exec();
+        return this.model.findByIdAndUpdate(id, userDTO, { new: true }).exec();
     }
 }
