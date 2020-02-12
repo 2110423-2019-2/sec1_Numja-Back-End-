@@ -9,14 +9,12 @@ export class AdminController {
     constructor(private readonly service: AdminService) {}
 
     @Patch('suspend')
-    async suspend(
-        @Body() idDTO: UpdateStatusDTO) {
-        this.service.suspend(idDTO)
+    async suspend(@Body() idDTO: UpdateStatusDTO) {
+        this.service.suspend(idDTO);
     }
 
     @Patch('activate')
-    async activate(
-        @Body() idDTO: UpdateStatusDTO) {
-        this.service.reactivate(idDTO)
+    async activate(@Body() idDTO: UpdateStatusDTO) {
+        this.service.reactivate(idDTO);
     }
 }

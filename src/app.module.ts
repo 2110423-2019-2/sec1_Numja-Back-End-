@@ -18,7 +18,7 @@ import { JwtMiddleware } from './middlewares/jwt.middleware';
         ConfigModule,
         UserModule,
         AuthModule,
-        AdminModule
+        AdminModule,
     ],
     controllers: [AppController],
     providers: [AppService],
