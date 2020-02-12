@@ -7,6 +7,7 @@ import { ConfigService } from './config/config.service';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { JwtMiddleware } from './middlewares/jwt.middleware';
+import { SystemReportModule } from './system-report/system-report.module';
 
 @Module({
     imports: [
@@ -16,6 +17,7 @@ import { JwtMiddleware } from './middlewares/jwt.middleware';
         ConfigModule,
         UserModule,
         AuthModule,
+        SystemReportModule,
     ],
     controllers: [AppController],
     providers: [AppService],
