@@ -3,13 +3,13 @@ import { AdminController } from '../admin/admin.controller';
 import { UserModule } from '../user/user.module';
 import { AdminService } from '../admin/admin.service';
 import { TypegooseModule } from 'nestjs-typegoose';
-import { User } from '../model/user.model'
+import { User } from '../model/user.model';
 @Module({
     imports: [
         TypegooseModule.forFeature([
             { typegooseClass: User, schemaOptions: { timestamps: true } },
         ]),
-        UserModule
+        UserModule,
     ],
     controllers: [AdminController],
     providers: [AdminService],
