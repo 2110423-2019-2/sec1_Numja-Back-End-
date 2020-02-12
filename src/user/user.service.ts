@@ -24,7 +24,7 @@ export class UserService {
         }
         return this.model.findOne(conditions).exec();
     }
-
+    
     exists(id: string): Promise<boolean> {
         return this.model.exists({ _id: id });
     }
@@ -33,5 +33,9 @@ export class UserService {
         password = hashSync(password, 12);
         const user = new this.model({ ...userDTO, password });
         return user.save();
+    }
+
+    update(id: string, userDTO: Partial<User>): Promise<User> {
+        return this.model.findByIdAndUpdate(id, userDTO, { new: true}).exec();
     }
 }
