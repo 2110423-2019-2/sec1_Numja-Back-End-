@@ -22,6 +22,7 @@ import { UserReportModule } from './user-report/user-report.module';
         AdminModule
         SystemReportModule,
         UserReportModule,
+        AdminModule,
     ],
     controllers: [AppController],
     providers: [AppService],
