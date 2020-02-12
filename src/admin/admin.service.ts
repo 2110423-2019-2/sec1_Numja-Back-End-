@@ -11,20 +11,12 @@ export class AdminService {
     ) {}
 
     suspend(id: string) {
-        let options = { new: true };
         this.model
-            .findByIdAndUpdate(
-                id,
-                { status: UserStatus.Suspended },
-                options,
-            )
+            .findByIdAndUpdate(id, { status: UserStatus.Suspended })
             .exec();
     }
 
     reactivate(id: string) {
-        let options = { new: true };
-        this.model
-            .findByIdAndUpdate(id, { status: UserStatus.Active }, options)
-            .exec();
+        this.model.findByIdAndUpdate(id, { status: UserStatus.Active }).exec();
     }
 }
