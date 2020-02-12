@@ -1,7 +1,6 @@
-import { Controller, UseGuards, Post, Body } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { SystemReportService } from './system-report.service';
-import { AuthGuard } from '../guards/auth.guard';
 import { SystemReport } from '../model/system-report.model';
 
 @ApiBearerAuth()
@@ -10,8 +9,15 @@ import { SystemReport } from '../model/system-report.model';
 export class SystemReportController {
     constructor(private readonly service: SystemReportService) {}
 
+    @Get()
+    all() {
+        return this.service.find();
+    }
+    @Get(':id')
+    one(@Param('id') reportId: string) {
+        return this.service.findById(reportId);
+    }
     @Post()
-    // @UseGuards(AuthGuard) // Not yet working
     create(@Body() report: SystemReport) {
         return this.service.create(report);
     }
