@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
-import { SystemReport } from '../model/system-report.model';
 import { ReturnModelType } from '@typegoose/typegoose';
+import { UserReport } from '../model/user-report.model';
 
 @Injectable()
-export class SystemReportService {
+export class UserReportService {
     constructor(
-        @InjectModel(SystemReport)
-        private readonly model: ReturnModelType<typeof SystemReport>,
+        @InjectModel(UserReport)
+        private readonly model: ReturnModelType<typeof UserReport>,
     ) {}
 
-    create(reportDTO: SystemReport): Promise<SystemReport> {
+    create(reportDTO: UserReport): Promise<UserReport> {
         const report = new this.model(reportDTO);
         return report.save();
     }
