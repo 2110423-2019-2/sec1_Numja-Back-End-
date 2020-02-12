@@ -26,12 +26,13 @@ export class ConfigService
     }
 
     createJwtOptions(): JwtModuleOptions {
-        return {
+        const options: JwtModuleOptions = {
             secret: this.secret,
-            signOptions: {
-                expiresIn: '60s',
-            },
         };
+        if (this.getEnv('NODE_ENV') === 'development') {
+            options.signOptions = { expiresIn: '60d ' };
+        }
+        return options;
     }
 
     get secret(): string {
