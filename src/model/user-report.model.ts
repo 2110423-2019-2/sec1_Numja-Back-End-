@@ -1,7 +1,7 @@
 import { prop, mongoose } from '@typegoose/typegoose';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class SystemReport {
+export class UserReport {
     _id?: mongoose.Types.ObjectId;
 
     get id() {
