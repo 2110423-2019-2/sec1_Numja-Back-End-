@@ -14,6 +14,6 @@ export class AdminController {
 
     @Patch('activate')
     activate(@Body('id') id: string) {
-        return this.service.reactivate(id);
+        return this.service.activate(id);
     }
 }
