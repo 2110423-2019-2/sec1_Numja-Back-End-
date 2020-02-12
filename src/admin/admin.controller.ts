@@ -1,5 +1,4 @@
 import { Controller, Post, Body, Patch, Param, Get } from '@nestjs/common';
-import { UpdateStatusDTO } from './admin.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { AdminService } from './admin.service';
 
@@ -8,13 +7,13 @@ import { AdminService } from './admin.service';
 export class AdminController {
     constructor(private readonly service: AdminService) {}
 
-    @Patch('suspend')
-    async suspend(@Body() idDTO: UpdateStatusDTO) {
-        this.service.suspend(idDTO);
+    @Patch('suspend/:id')
+    async suspend(@Param('id') id: string) {
+        this.service.suspend(id);
     }
 
-    @Patch('activate')
-    async activate(@Body() idDTO: UpdateStatusDTO) {
-        this.service.reactivate(idDTO);
+    @Patch('activate/:id')
+    async activate(@Param('id') id: string) {
+        this.service.reactivate(id);
     }
 }
