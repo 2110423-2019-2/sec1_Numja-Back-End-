@@ -30,7 +30,7 @@ export class ConfigService
             secret: this.secret,
         };
         if (this.getEnv('NODE_ENV') === 'development') {
-            options.signOptions = { expiresIn: '60d ' };
+            options.signOptions = { expiresIn: '60d' };
         }
         return options;
     }
