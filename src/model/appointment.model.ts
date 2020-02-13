@@ -1,4 +1,4 @@
-import { prop, mongoose } from '@typegoose/typegoose';
+import { prop, mongoose, Ref } from '@typegoose/typegoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { User } from './user.model';
 import { AppointmentStatus } from 'src/enum/appointment.enum';
@@ -28,11 +28,11 @@ export class Appointment {
 
     @ApiProperty()
     @prop({ ref: User })
-    student: User;
+    student: Ref<User>;
 
     @ApiProperty()
     @prop({ ref: User })
-    tutor: User;
+    tutor: Ref<User>;
 
     @ApiProperty()
     @prop({ enum: AppointmentStatus, default: AppointmentStatus.Pending })
