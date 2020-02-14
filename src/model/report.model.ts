@@ -13,10 +13,7 @@ export class Report {
 
     @prop({ required: true })
     description: string;
-
-    // @prop({ required: true })
-    // reporter: string;
-
+    
     @prop({ ref: User, required: true })
     reporter: Ref<User>;
 
