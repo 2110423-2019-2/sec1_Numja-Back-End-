@@ -3,26 +3,26 @@ import { User } from '../model/user.model';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UserReportDTO {
-    @ApiProperty()
+    @ApiProperty({ required: true })
     title: string;
 
-    @ApiProperty()
+    @ApiProperty({ required: true })
     description: string;
 
-    @ApiProperty()
+    @ApiProperty({ required: true })
     reporter: Ref<User>;
 
-    @ApiProperty()
+    @ApiProperty({ required: true })
     reportedUser: Ref<User>;
 }
 
 export class SystemReportDTO {
-    @ApiProperty()
+    @ApiProperty({ required: true })
     title: string;
 
-    @ApiProperty()
+    @ApiProperty({ required: true })
     description: string;
 
-    @ApiProperty()
+    @ApiProperty({ required: true })
     reporter: Ref<User>;
 }
