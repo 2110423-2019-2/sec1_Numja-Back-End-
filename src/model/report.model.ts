@@ -5,14 +5,17 @@ import { ReportType } from '../enum/report.enum';
 export class Report {
     _id?: mongoose.Types.ObjectId;
 
-    @prop()
-    type: ReportType;
+    @prop({ required: true })
+    title: ReportType;
 
     @prop({ enum: ReportType, required: true })
-    title: ReportType;
+    type: ReportType;
 
     @prop({ required: true })
     description: string;
+
+    // @prop({ required: true })
+    // reporter: string;
 
     @prop({ ref: User, required: true })
     reporter: Ref<User>;
