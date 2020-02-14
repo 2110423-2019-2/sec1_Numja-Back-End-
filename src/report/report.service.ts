@@ -24,7 +24,7 @@ export class ReportService {
     }
 
     getUserReports(): Promise<Report[]> {
-        return this.model.find({ type: ReportType.User }).exec();
+        return this.model.find({ type: { $match: ReportType.User} }).exec();
     }
 
     getSystemReports(): Promise<Report[]> {
@@ -32,22 +32,14 @@ export class ReportService {
     }
 
     async createUserReport(userReport: UserReportDTO): Promise<Report> {
-        let reporter: User, reportedUser: User;
-        await this.userService.findById(userReport.reporter).then(user => {
-            reporter = user;
-        });
-        await this.userService.findById(userReport.reportedUser).then(user => {
-            reportedUser = user;
-        });
+        const reporter = await this.userService.findById(userReport.reporter);
+        const reportedUser = await this.userService.findById(userReport.reportedUser);
         const report = new this.model({ ...userReport , type: ReportType.User, reporter, reportedUser });
         return report.save();
     }
 
     async createSystemReport(systemReport: SystemReportDTO): Promise<Report> {
-        let reporter: User;
-        await this.userService.findById(systemReport.reporter).then(user => {
-            reporter = user;
-        });
+        const reporter = await this.userService.findById(systemReport.reporter);
         const report = new this.model({ ...systemReport, type: ReportType.System, reporter });
         return report.save();
     }
