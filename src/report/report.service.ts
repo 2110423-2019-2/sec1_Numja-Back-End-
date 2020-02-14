@@ -23,7 +23,7 @@ export class ReportService {
     }
 
     getUserReports(): Promise<Report[]> {
-        return this.model.find({ type: { $match: ReportType.User} }).exec();
+        return this.model.find({ type: ReportType.User }).exec();
     }
 
     getSystemReports(): Promise<Report[]> {
