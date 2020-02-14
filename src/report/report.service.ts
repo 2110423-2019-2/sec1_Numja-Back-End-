@@ -32,14 +32,27 @@ export class ReportService {
 
     async createUserReport(report: UserReportDTO): Promise<Report> {
         const reporter = await this.userService.findById(report.reporterId);
-        const reportedUser = await this.userService.findById(report.reportedUserId);
-        const userReport = new this.model({ title: report.title, description: report.description, type: ReportType.User, reporter, reportedUser });
+        const reportedUser = await this.userService.findById(
+            report.reportedUserId,
+        );
+        const userReport = new this.model({
+            title: report.title,
+            description: report.description,
+            type: ReportType.User,
+            reporter,
+            reportedUser,
+        });
         return userReport.save();
     }
 
     async createSystemReport(report: SystemReportDTO): Promise<Report> {
         const reporter = await this.userService.findById(report.reporterId);
-        const systemReport = new this.model({ title: report.title, description: report.description, type: ReportType.System, reporter });
+        const systemReport = new this.model({
+            title: report.title,
+            description: report.description,
+            type: ReportType.System,
+            reporter,
+        });
         return systemReport.save();
     }
 }

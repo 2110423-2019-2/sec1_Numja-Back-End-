@@ -11,7 +11,7 @@ export class SystemReportDTO {
     reporterId: string;
 }
 
-export class UserReportDTO extends SystemReportDTO{
+export class UserReportDTO extends SystemReportDTO {
     @ApiProperty({ required: true })
     reportedUserId: string;
 }
