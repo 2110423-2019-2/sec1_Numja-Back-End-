@@ -16,11 +16,6 @@ export class ReportController {
         return this.service.getAllReports();
     }
 
-    @Get(':id')
-    findById(@Param('id') reportId: string) {
-        return this.service.findById(reportId);
-    }
-
     @Get('user')
     getUserReports() {
         return this.service.getUserReports();
@@ -29,6 +24,11 @@ export class ReportController {
     @Get('system')
     getSystemReports() {
         return this.service.getSystemReports();
+    }
+
+    @Get(':id')
+    findById(@Param('id') reportId: string) {
+        return this.service.findById(reportId);
     }
 
     @Post('user')
