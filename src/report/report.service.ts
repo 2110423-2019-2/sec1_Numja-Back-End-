@@ -5,7 +5,6 @@ import { Report } from '../model/report.model';
 import { SystemReportDTO, UserReportDTO } from './report.dto';
 import { ReportType } from '../enum/report.enum';
 import { UserService } from '../user/user.service';
-import { User } from '../model/user.model';
 
 @Injectable()
 export class ReportService {
