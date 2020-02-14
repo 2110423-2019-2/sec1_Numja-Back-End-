@@ -1,17 +1,11 @@
 import { Ref } from '@typegoose/typegoose';
 import { User } from '../model/user.model';
 import { ApiProperty } from '@nestjs/swagger';
-import { ReportType } from '../enum/report.enum';
 
 export class UserReportDTO {
-    @ApiProperty()
-    id: string;
-
-    @ApiProperty({ enum: ReportType})
-    type: ReportType;
 
     @ApiProperty()
-    title: string;
+    type: string;
 
     @ApiProperty()
     description: string;
@@ -25,13 +19,7 @@ export class UserReportDTO {
 
 export class SystemReportDTO {
     @ApiProperty()
-    id: string;
-
-    @ApiProperty({ enum: ReportType})
-    type: ReportType;
-
-    @ApiProperty()
-    title: string;
+    type: string;
 
     @ApiProperty()
     description: string;
