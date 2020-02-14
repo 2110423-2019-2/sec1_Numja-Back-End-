@@ -5,10 +5,6 @@ import { ReportType } from '../enum/report.enum';
 export class Report {
     _id?: mongoose.Types.ObjectId;
 
-    get id() {
-        return this._id;
-    }
-
     @prop({ required: true })
     type: ReportType;
 
