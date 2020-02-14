@@ -26,7 +26,7 @@ export class ReportController {
         return this.service.getSystemReports();
     }
 
-    @Get(':id')
+    @Get('/id/:id')
     findById(@Param('id') reportId: string) {
         return this.service.findById(reportId);
     }
