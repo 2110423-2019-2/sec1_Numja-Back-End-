@@ -4,12 +4,15 @@ import { ReturnModelType } from '@typegoose/typegoose';
 import { Report } from '../model/report.model';
 import { SystemReportDTO, UserReportDTO } from './report.dto';
 import { ReportType } from '../enum/report.enum';
+import { UserService } from '../user/user.service';
+import { User } from '../model/user.model';
 
 @Injectable()
 export class ReportService {
     constructor(
         @InjectModel(Report)
         private readonly model: ReturnModelType<typeof Report>,
+        private readonly userService: UserService,
     ) {}
 
     find(): Promise<Report[]> {
@@ -28,13 +31,24 @@ export class ReportService {
         return this.model.find({ type: ReportType.System }).exec();
     }
 
-    createUserReport(userReport: UserReportDTO): Promise<Report> {
-        const report = new this.model({ ...userReport , type: ReportType.User });
+    async createUserReport(userReport: UserReportDTO): Promise<Report> {
+        let reporter: User, reportedUser: User;
+        await this.userService.findById(userReport.reporter).then(user => {
+            reporter = user;
+        });
+        await this.userService.findById(userReport.reportedUser).then(user => {
+            reportedUser = user;
+        });
+        const report = new this.model({ ...userReport , type: ReportType.User, reporter, reportedUser });
         return report.save();
     }
 
-    createSystemReport(systemReport: SystemReportDTO): Promise<Report> {
-        const report = new this.model({ ...systemReport, type: ReportType.System });
+    async createSystemReport(systemReport: SystemReportDTO): Promise<Report> {
+        let reporter: User;
+        await this.userService.findById(systemReport.reporter).then(user => {
+            reporter = user;
+        });
+        const report = new this.model({ ...systemReport, type: ReportType.System, reporter });
         return report.save();
     }
 }
