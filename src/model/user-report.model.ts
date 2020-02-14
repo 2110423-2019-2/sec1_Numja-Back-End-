@@ -1,5 +1,6 @@
-import { prop, mongoose } from '@typegoose/typegoose';
+import { prop, mongoose, Ref } from '@typegoose/typegoose';
 import { ApiProperty } from '@nestjs/swagger';
+import { User } from './user.model';
 
 export class UserReport {
     _id?: mongoose.Types.ObjectId;
@@ -17,10 +18,10 @@ export class UserReport {
     description: string;
 
     @ApiProperty()
-    @prop({ required: true })
-    reporterUserId: string;
+    @prop({ref: User , required: true })
+    reporter: Ref<User>;
 
     @ApiProperty()
-    @prop({ required: true })
-    reportedUserId: string;
+    @prop({ref: User , required: true })
+    reportedUser: Ref<User>;
 }
