@@ -13,11 +13,11 @@ export class ReportController {
 
     @Get()
     getAllReports() {
-        return this.service.find();
+        return this.service.getAllReports();
     }
 
     @Get(':id')
-    one(@Param('id') reportId: string) {
+    findById(@Param('id') reportId: string) {
         return this.service.findById(reportId);
     }
 
