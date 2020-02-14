@@ -9,7 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { AdminModule } from './admin/admin.module';
 import { JwtMiddleware } from './middlewares/jwt.middleware';
 import { SystemReportModule } from './system-report/system-report.module';
-import { UserReportModule } from './user-report/user-report.module';
+import { ReportModule } from './report/report.module';
 
 @Module({
     imports: [
@@ -20,7 +20,7 @@ import { UserReportModule } from './user-report/user-report.module';
         UserModule,
         AuthModule,
         SystemReportModule,
-        UserReportModule,
+        ReportModule,
         AdminModule,
     ],
     controllers: [AppController],
