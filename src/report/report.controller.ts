@@ -28,7 +28,7 @@ export class ReportController {
 
     @Get('system')
     getSystemReports() {
-        return this.service.getSystemReports()
+        return this.service.getSystemReports();
     }
 
     @Post('user')

@@ -9,7 +9,7 @@ import { ReportType } from '../enum/report.enum';
 export class ReportService {
     constructor(
         @InjectModel(Report)
-        private readonly model: ReturnModelType<typeof Report>
+        private readonly model: ReturnModelType<typeof Report>,
     ) {}
 
     find(): Promise<Report[]> {
@@ -20,12 +20,12 @@ export class ReportService {
         return this.model.findById(reportId).exec();
     }
 
-    getSystemReports(): Promise<Report[]> {
-        return this.model.find({ type: ReportType.SystemReport }).exec();
-    }
-
     getUserReports(): Promise<Report[]> {
         return this.model.find({ type: ReportType.UserReport }).exec();
+    }
+
+    getSystemReports(): Promise<Report[]> {
+        return this.model.find({ type: ReportType.SystemReport }).exec();
     }
 
     createUserReport(userReport: UserReportDTO): Promise<Report> {

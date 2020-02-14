@@ -1,5 +1,5 @@
 import { prop, mongoose, Ref } from '@typegoose/typegoose';
-import { User } from '../model/user.model';
+import { User } from './user.model';
 import { ReportType } from '../enum/report.enum';
 
 export class Report {
