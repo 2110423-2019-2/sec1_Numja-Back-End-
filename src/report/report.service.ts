@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
 import { ReturnModelType } from '@typegoose/typegoose';
 import { Report } from '../model/report.model';
-import { UserReportDTO, SystemReportDTO } from './report.dto';
+import { SystemReportDTO, UserReportDTO } from './report.dto';
 import { ReportType } from '../enum/report.enum';
 
 @Injectable()
