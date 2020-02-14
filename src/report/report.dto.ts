@@ -6,9 +6,6 @@ export class SystemReportDTO {
 
     @ApiProperty({ required: true })
     description: string;
-
-    @ApiProperty({ required: true })
-    reporterId: string;
 }
 
 export class UserReportDTO extends SystemReportDTO {

@@ -3,6 +3,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ReportService } from './report.service';
 import { AuthGuard } from '../guards/auth.guard';
 import { SystemReportDTO, UserReportDTO } from './report.dto';
+import { UserId } from '../decorators/user-id.decorator';
 
 @ApiBearerAuth()
 @ApiTags('Report')
@@ -32,12 +33,18 @@ export class ReportController {
     }
 
     @Post('user')
-    createUserReport(@Body() report: UserReportDTO) {
-        return this.service.createUserReport(report);
+    createUserReport(
+        @Body() report: UserReportDTO,
+        @UserId() reporterId: string,
+    ) {
+        return this.service.createUserReport(report, reporterId);
     }
 
     @Post('system')
-    createSystemReport(@Body() report: SystemReportDTO) {
-        return this.service.createSystemReport(report);
+    createSystemReport(
+        @Body() report: SystemReportDTO,
+        @UserId() reporterId: string,
+    ) {
+        return this.service.createSystemReport(report, reporterId);
     }
 }
