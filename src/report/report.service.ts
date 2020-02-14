@@ -29,12 +29,12 @@ export class ReportService {
     }
 
     createUserReport(userReport: UserReportDTO): Promise<Report> {
-        const report = new this.model(userReport);
+        const report = new this.model({ type: ReportType.User, ...userReport });
         return report.save();
     }
 
     createSystemReport(systemReport: SystemReportDTO): Promise<Report> {
-        const report = new this.model(systemReport);
+        const report = new this.model({ type: ReportType.System, ...systemReport});
         return report.save();
     }
 }
