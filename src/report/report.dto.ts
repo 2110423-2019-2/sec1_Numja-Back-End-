@@ -1,7 +1,6 @@
 import { Ref } from '@typegoose/typegoose';
 import { User } from '../model/user.model';
 import { ApiProperty } from '@nestjs/swagger';
-import { ReportType } from '../enum/report.enum';
 
 export class UserReportDTO {
     @ApiProperty()
