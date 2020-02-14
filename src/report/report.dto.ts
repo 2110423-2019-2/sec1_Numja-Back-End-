@@ -7,7 +7,7 @@ export class UserReportDTO {
     @ApiProperty()
     id: string;
 
-    @ApiProperty()
+    @ApiProperty({ enum: ReportType})
     type: ReportType;
 
     @ApiProperty()
@@ -27,7 +27,7 @@ export class SystemReportDTO {
     @ApiProperty()
     id: string;
 
-    @ApiProperty()
+    @ApiProperty({ enum: ReportType})
     type: ReportType;
 
     @ApiProperty()

@@ -21,11 +21,11 @@ export class ReportService {
     }
 
     getUserReports(): Promise<Report[]> {
-        return this.model.find({ type: ReportType.UserReport }).exec();
+        return this.model.find({ type: ReportType.User }).exec();
     }
 
     getSystemReports(): Promise<Report[]> {
-        return this.model.find({ type: ReportType.SystemReport }).exec();
+        return this.model.find({ type: ReportType.System }).exec();
     }
 
     createUserReport(userReport: UserReportDTO): Promise<Report> {

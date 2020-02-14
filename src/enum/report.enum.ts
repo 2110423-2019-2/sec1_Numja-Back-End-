@@ -1,4 +1,4 @@
 export enum ReportType {
-    UserReport = 'user',
-    SystemReport = 'system',
+    User = 'user',
+    System = 'system',
 }
