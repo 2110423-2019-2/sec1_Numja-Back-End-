@@ -5,12 +5,6 @@ import { ReportType } from '../enum/report.enum';
 
 export class UserReportDTO {
     @ApiProperty()
-    id: string;
-
-    @ApiProperty({ enum: ReportType})
-    type: ReportType;
-
-    @ApiProperty()
     title: string;
 
     @ApiProperty()
@@ -24,12 +18,6 @@ export class UserReportDTO {
 }
 
 export class SystemReportDTO {
-    @ApiProperty()
-    id: string;
-
-    @ApiProperty({ enum: ReportType})
-    type: ReportType;
-
     @ApiProperty()
     title: string;
 
