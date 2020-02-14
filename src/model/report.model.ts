@@ -6,7 +6,7 @@ export class Report {
     _id?: mongoose.Types.ObjectId;
 
     @prop({ required: true })
-    title: ReportType;
+    title: string;
 
     @prop({ enum: ReportType, required: true })
     type: ReportType;
