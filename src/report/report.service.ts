@@ -30,16 +30,16 @@ export class ReportService {
         return this.model.find({ type: ReportType.System }).exec();
     }
 
-    async createUserReport(userReport: UserReportDTO): Promise<Report> {
-        const reporter = await this.userService.findById(userReport.reporterId);
-        const reportedUser = await this.userService.findById(userReport.reportedUserId);
-        const report = new this.model({ ...userReport , type: ReportType.User, reporter, reportedUser });
-        return report.save();
+    async createUserReport(report: UserReportDTO): Promise<Report> {
+        const reporter = await this.userService.findById(report.reporterId);
+        const reportedUser = await this.userService.findById(report.reportedUserId);
+        const userReport = new this.model({ title: report.title, description: report.description, type: ReportType.User, reporter, reportedUser });
+        return userReport.save();
     }
 
-    async createSystemReport(systemReport: SystemReportDTO): Promise<Report> {
-        const reporter = await this.userService.findById(systemReport.reporterId);
-        const report = new this.model({ ...systemReport, type: ReportType.System, reporter });
-        return report.save();
+    async createSystemReport(report: SystemReportDTO): Promise<Report> {
+        const reporter = await this.userService.findById(report.reporterId);
+        const systemReport = new this.model({ title: report.title, description: report.description, type: ReportType.System, reporter });
+        return systemReport.save();
     }
 }
