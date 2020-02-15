@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ReturnModelType } from '@typegoose/typegoose';
 import { User } from '../model/user.model';
 import { InjectModel } from 'nestjs-typegoose';
-import { hashSync } from 'bcrypt';
+import { hashSync } from 'bcryptjs';
 
 @Injectable()
 export class UserService {
@@ -25,9 +25,17 @@ export class UserService {
         return this.model.findOne(conditions).exec();
     }
 
+    exists(id: string): Promise<boolean> {
+        return this.model.exists({ _id: id });
+    }
+
     create({ password, ...userDTO }: User): Promise<User> {
         password = hashSync(password, 12);
         const user = new this.model({ ...userDTO, password });
         return user.save();
+    }
+
+    update(id: string, userDTO: Partial<User>): Promise<User> {
+        return this.model.findByIdAndUpdate(id, userDTO, { new: true }).exec();
     }
 }
