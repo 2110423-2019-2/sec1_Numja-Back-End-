@@ -29,11 +29,6 @@ export class UserService {
         return this.model.exists({ _id: id });
     }
 
-    // async isAdmin(id: string): Promise<boolean> {
-    //     let user = await this.model.findById(id).exec();
-    //     return user.role === UserRole.Admin
-    // }
-
     create({ password, ...userDTO }: User): Promise<User> {
         password = hashSync(password, 12);
         const user = new this.model({ ...userDTO, password });

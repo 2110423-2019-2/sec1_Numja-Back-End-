@@ -15,20 +15,18 @@ import { AuthGuard } from 'src/guards/auth.guard';
 
 @ApiBearerAuth()
 @ApiTags('Admin')
-// @Roles('admin')
 @UseGuards(RolesGuard)
 @UseGuards(AuthGuard)
+@Roles('admin')
 @Controller('admin')
 export class AdminController {
     constructor(private readonly service: AdminService) {}
 
-    @Roles('admin')
     @Patch('suspend')
     suspend(@Body('id') id: string) {
         return this.service.suspend(id);
     }
 
-    @Roles('admin')
     @Patch('activate')
     activate(@Body('id') id: string) {
         return this.service.activate(id);
