@@ -1,12 +1,4 @@
-import {
-    Controller,
-    Post,
-    Body,
-    Patch,
-    Param,
-    Get,
-    UseGuards,
-} from '@nestjs/common';
+import { Controller, Body, Patch, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { AdminService } from './admin.service';
 import { Roles } from 'src/decorators/roles.decorator';
