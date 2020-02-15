@@ -3,7 +3,7 @@ import { ReturnModelType } from '@typegoose/typegoose';
 import { User } from '../model/user.model';
 import { InjectModel } from 'nestjs-typegoose';
 import { hashSync } from 'bcryptjs';
-
+// import { UserRole } from '../enum/user.enum'
 @Injectable()
 export class UserService {
     constructor(
@@ -28,6 +28,11 @@ export class UserService {
     exists(id: string): Promise<boolean> {
         return this.model.exists({ _id: id });
     }
+
+    // async isAdmin(id: string): Promise<boolean> {
+    //     let user = await this.model.findById(id).exec();
+    //     return user.role === UserRole.Admin
+    // }
 
     create({ password, ...userDTO }: User): Promise<User> {
         password = hashSync(password, 12);
