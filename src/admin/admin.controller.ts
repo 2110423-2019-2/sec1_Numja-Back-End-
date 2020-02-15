@@ -8,8 +8,7 @@ import { SuspendOrActivateDTO } from './admin.dto';
 
 @ApiBearerAuth()
 @ApiTags('Admin')
-@UseGuards(RolesGuard)
-@UseGuards(AuthGuard)
+@UseGuards(AuthGuard, RolesGuard)
 @Roles('admin')
 @Controller('admin')
 export class AdminController {

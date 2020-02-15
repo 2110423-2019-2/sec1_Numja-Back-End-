@@ -3,7 +3,7 @@ import { ReturnModelType } from '@typegoose/typegoose';
 import { User } from '../model/user.model';
 import { InjectModel } from 'nestjs-typegoose';
 import { hashSync } from 'bcryptjs';
-// import { UserRole } from '../enum/user.enum'
+
 @Injectable()
 export class UserService {
     constructor(
