@@ -18,8 +18,8 @@ export class ReportService {
         return this.model.find().exec();
     }
 
-    findById(reportId: string): Promise<Report> {
-        return this.model.findById(reportId).exec();
+    findById(id: string): Promise<Report> {
+        return this.model.findById(id).exec();
     }
 
     getUserReports(): Promise<Report[]> {
