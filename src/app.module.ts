@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { AdminModule } from './admin/admin.module';
 import { JwtMiddleware } from './middlewares/jwt.middleware';
 import { AppointmentModule } from './appointment/appointment.module';
+import { ReportModule } from './report/report.module';
 
 @Module({
     imports: [
@@ -18,6 +19,7 @@ import { AppointmentModule } from './appointment/appointment.module';
         ConfigModule,
         UserModule,
         AuthModule,
+        ReportModule,
         AdminModule,
         AppointmentModule,
     ],
