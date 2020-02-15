@@ -4,6 +4,7 @@ import { AdminService } from './admin.service';
 import { Roles } from 'src/decorators/roles.decorator';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { AuthGuard } from 'src/guards/auth.guard';
+import { SuspendOrActivateDTO } from './admin.dto';
 
 @ApiBearerAuth()
 @ApiTags('Admin')
@@ -15,12 +16,12 @@ export class AdminController {
     constructor(private readonly service: AdminService) {}
 
     @Patch('suspend')
-    suspend(@Body('id') id: string) {
-        return this.service.suspend(id);
+    suspend(@Body() { userId }: SuspendOrActivateDTO) {
+        return this.service.suspend(userId);
     }
 
     @Patch('activate')
-    activate(@Body('id') id: string) {
-        return this.service.activate(id);
+    activate(@Body() { userId }: SuspendOrActivateDTO) {
+        return this.service.activate(userId);
     }
 }

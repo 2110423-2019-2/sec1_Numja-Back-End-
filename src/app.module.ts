@@ -8,6 +8,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { AdminModule } from './admin/admin.module';
 import { JwtMiddleware } from './middlewares/jwt.middleware';
+import { ReportModule } from './report/report.module';
 
 @Module({
     imports: [
@@ -17,6 +18,7 @@ import { JwtMiddleware } from './middlewares/jwt.middleware';
         ConfigModule,
         UserModule,
         AuthModule,
+        ReportModule,
         AdminModule,
     ],
     controllers: [AppController],

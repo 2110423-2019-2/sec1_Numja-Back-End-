@@ -1,9 +1,10 @@
-import { Module } from '@nestjs/common';
+import { Module, Global } from '@nestjs/common';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { TypegooseModule } from 'nestjs-typegoose';
 import { User } from '../model/user.model';
 
+@Global()
 @Module({
     imports: [
         TypegooseModule.forFeature([
