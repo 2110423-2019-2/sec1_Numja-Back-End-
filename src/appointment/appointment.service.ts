@@ -16,7 +16,7 @@ export class AppointmentService {
     ) {}
 
     async createAppointment(
-        {tutorId, ...createAppointmentDTO}: CreateAppointmentDTO,
+        { tutorId, ...createAppointmentDTO }: CreateAppointmentDTO,
         studentId: string,
     ): Promise<Appointment> {
         const tutor = await this.userService.findById(tutorId);
@@ -82,9 +82,9 @@ export class AppointmentService {
         const appointment = await this.findById(id);
         if (
             (appointment.status === AppointmentStatus.Pending &&
-                appointmentDTO.status===AppointmentStatus.Rejected) ||
+                appointmentDTO.status === AppointmentStatus.Rejected) ||
             (appointment.status === AppointmentStatus.Pending &&
-                appointmentDTO.status===AppointmentStatus.Approved)||
+                appointmentDTO.status === AppointmentStatus.Approved) ||
             (appointment.status === AppointmentStatus.Approved &&
                 appointmentDTO.status === AppointmentStatus.Cancelled)
         )
