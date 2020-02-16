@@ -1,4 +1,12 @@
-import { Controller, Get, Param, Post, Body, Patch, UseGuards } from '@nestjs/common';
+import {
+    Controller,
+    Get,
+    Param,
+    Post,
+    Body,
+    Patch,
+    UseGuards,
+} from '@nestjs/common';
 import { AppointmentService } from './appointment.service';
 import { UserId } from 'src/decorators/user-id.decorator';
 import { AppointmentDTO } from './appointment.dto';
@@ -7,13 +15,13 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/guards/auth.guard';
 
 @ApiBearerAuth()
-@ApiTags('Admin')
+@ApiTags('Appointment')
 @UseGuards(AuthGuard)
 @Controller('appointment')
 export class AppointmentController {
     constructor(private readonly service: AppointmentService) {}
 
-    @Post()
+    @Post('create')
     createAppointment(
         @Body() appointment: AppointmentDTO,
         @UserId() studentId: string,
@@ -27,23 +35,23 @@ export class AppointmentController {
     }
 
     @Get('id/:id')
-    findById(@Param('id') id: string) {
+    findByAppointmentId(@Param('id') id: string) {
         return this.service.findById(id);
     }
 
-    @Get()
+    @Get('me')
     findByUserId(@UserId() userId: string) {
         return this.service.findByUserId(userId);
     }
 
-    @Patch('id/:id')
+    @Patch('cancel/:id')
     cancelAppointment(@Param('id') id: string, @UserId() userId: string) {
         return this.service.updateStudentAppointment(id, userId, {
             status: AppointmentStatus.Cancelled,
         });
     }
 
-    @Patch('id/:id')
+    @Patch('edit/:id')
     editAppintment(
         @Param('id') id: string,
         @Body() editObject: Partial<AppointmentDTO>,
@@ -52,21 +60,21 @@ export class AppointmentController {
         return this.service.updateStudentAppointment(id, userId, editObject);
     }
 
-    @Patch('id/:id')
+    @Patch('accept/:id')
     acceptAppointment(@Param('id') id: string, @UserId() userId: string) {
         return this.service.updateTutorAppointment(id, userId, {
             status: AppointmentStatus.Approved,
         });
     }
 
-    @Patch('id/:id')
+    @Patch('reject/:id')
     rejectAppointment(@Param('id') id: string, @UserId() userId: string) {
         return this.service.updateTutorAppointment(id, userId, {
             status: AppointmentStatus.Cancelled,
         });
     }
 
-    @Patch('id/:id')
+    @Patch('finalize/:id')
     finalizeAppointment(@Param('id') id: string, @UserId() userId: string) {
         return this.service.updateStudentAppointment(id, userId, {
             status: AppointmentStatus.Finished,
