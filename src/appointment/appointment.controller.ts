@@ -61,7 +61,7 @@ export class AppointmentController {
         });
     }
 
-    @Patch(':id/student/edit')
+    @Patch(':id/edit')
     editAppintment(
         @Param('id') id: string,
         @Body() editAppointmentDTO: Partial<EditAppointmentDTO>,
@@ -74,21 +74,21 @@ export class AppointmentController {
         );
     }
 
-    @Patch(':id/tutor/accept')
+    @Patch(':id/accept')
     acceptAppointment(@Param('id') id: string, @UserId() userId: string) {
         return this.service.updateTutorAppointmentStatus(id, userId, {
             status: AppointmentStatus.Approved,
         });
     }
 
-    @Patch(':id/tutor/reject')
+    @Patch(':id/reject')
     rejectAppointment(@Param('id') id: string, @UserId() userId: string) {
         return this.service.updateTutorAppointmentStatus(id, userId, {
             status: AppointmentStatus.Rejected,
         });
     }
 
-    @Patch(':id/student/finish')
+    @Patch(':id/finish')
     finishAppointment(@Param('id') id: string, @UserId() userId: string) {
         return this.service.updateStudentAppointmentStatus(id, userId, {
             status: AppointmentStatus.Finished,
