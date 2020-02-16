@@ -4,34 +4,43 @@ import { ReportService } from './report.service';
 import { AuthGuard } from '../guards/auth.guard';
 import { SystemReportDTO, UserReportDTO } from './report.dto';
 import { UserId } from '../decorators/user-id.decorator';
+import { RolesGuard } from '../guards/roles.guard';
+import { Roles } from '../decorators/roles.decorator';
+import { UserRole } from '../enum/user.enum';
+import { ReportType } from '../enum/report.enum';
 
 @ApiBearerAuth()
 @ApiTags('Report')
-@UseGuards(AuthGuard)
+@UseGuards(AuthGuard, RolesGuard)
 @Controller('report')
 export class ReportController {
     constructor(private readonly service: ReportService) {}
 
+    @Roles(UserRole.Admin)
     @Get()
-    getAllReports() {
-        return this.service.getAllReports();
+    find() {
+        return this.service.find();
     }
 
+    @Roles(UserRole.Admin)
     @Get('user')
-    getUserReports() {
-        return this.service.getUserReports();
+    findUserReports() {
+        return this.service.find({ type: ReportType.User });
     }
 
+    @Roles(UserRole.Admin)
     @Get('system')
-    getSystemReports() {
-        return this.service.getSystemReports();
+    findSystemReports() {
+        return this.service.find({ type: ReportType.System });
     }
 
+    @Roles(UserRole.Admin)
     @Get('id/:id')
     findById(@Param('id') id: string) {
         return this.service.findById(id);
     }
 
+    @Roles(UserRole.Student, UserRole.Tutor)
     @Post('user')
     createUserReport(
         @Body() report: UserReportDTO,
@@ -40,6 +49,7 @@ export class ReportController {
         return this.service.createUserReport(report, reporterId);
     }
 
+    @Roles(UserRole.Student, UserRole.Tutor)
     @Post('system')
     createSystemReport(
         @Body() report: SystemReportDTO,
