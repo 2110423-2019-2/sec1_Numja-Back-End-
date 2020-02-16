@@ -4,6 +4,7 @@ import { Appointment } from 'src/model/appointment.model';
 import { ReturnModelType } from '@typegoose/typegoose';
 import { AppointmentDTO } from './appointment.dto';
 import { UserService } from 'src/user/user.service';
+import { UserRole } from 'src/enum/user.enum';
 
 @Injectable()
 export class AppointmentService {
@@ -45,13 +46,25 @@ export class AppointmentService {
         return this.model.find(searchObject).exec();
     }
 
-    async updateAppointment(
+    async updateStudentAppointment(
         id: string,
         userId: string,
         appointmentDTO: Partial<Appointment>,
     ): Promise<Appointment> {
         return this.model
             .findOneAndUpdate({ id, student: { id: userId } }, appointmentDTO, {
+                new: true,
+            })
+            .exec();
+    }
+
+    async updateTutorAppointment(
+        id: string,
+        userId: string,
+        appointmentDTO: Partial<Appointment>,
+    ): Promise<Appointment> {
+        return this.model
+            .findOneAndUpdate({ id, tutor: { id: userId } }, appointmentDTO, {
                 new: true,
             })
             .exec();
