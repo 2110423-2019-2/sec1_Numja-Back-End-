@@ -64,13 +64,13 @@ export class AppointmentController {
     @Patch(':id/student/edit')
     editAppintment(
         @Param('id') id: string,
-        @Body() editObject: Partial<EditAppointmentDTO>,
+        @Body() editAppointmentDTO: Partial<EditAppointmentDTO>,
         @UserId() userId: string,
     ) {
         return this.service.updateStudentAppointmentInfo(
             id,
             userId,
-            editObject,
+            editAppointmentDTO,
         );
     }
 
