@@ -84,6 +84,7 @@ export class AppointmentService {
         editAppointmentDTO: Partial<EditAppointmentDTO>,
     ): Promise<Appointment> {
         const appointment = await this.findById(id);
+        if(appointment.status===AppointmentStatus.Pending)
         return this.model
             .findOneAndUpdate({ id, student: { id: userId } }, editAppointmentDTO, {
                 new: true,
