@@ -5,10 +5,6 @@ import { AppointmentStatus } from 'src/enum/appointment.enum';
 export class Appointment {
     _id: mongoose.Types.ObjectId;
 
-    get id() {
-        return this._id;
-    }
-
     @prop({ required: true })
     startTime: Date;
 
