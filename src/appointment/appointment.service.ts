@@ -1,9 +1,9 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
 import { Appointment } from 'src/model/appointment.model';
-import {AppointmentStatus} from 'src/enum/appointment.enum'
+import { AppointmentStatus } from 'src/enum/appointment.enum';
 import { ReturnModelType } from '@typegoose/typegoose';
-import { AppointmentDTO, EditAppointmentDTO } from './appointment.dto';
+import { CreateAppointmentDTO, EditAppointmentDTO } from './appointment.dto';
 import { UserService } from 'src/user/user.service';
 import { UserRole } from 'src/enum/user.enum';
 
@@ -16,24 +16,25 @@ export class AppointmentService {
     ) {}
 
     async createAppointment(
-        appointment: AppointmentDTO,
+        {tutorId, ...createAppointmentDTO}: CreateAppointmentDTO,
         studentId: string,
     ): Promise<Appointment> {
+        const tutor = await this.userService.findById(tutorId);
+        if (tutor.role !== UserRole.Tutor)
+            throw new HttpException(
+                'Invalid tutor id',
+                HttpStatus.NOT_ACCEPTABLE,
+            );
         const student = await this.userService.findById(studentId);
-        const tutor = await this.userService.findById(appointment.tutorId);
         const appointmentObject = new this.model({
-            startTime: appointment.startTime,
-            endTime: appointment.endTime,
-            location: appointment.location,
-            price: appointment.price,
+            ...createAppointmentDTO,
             student,
             tutor,
         });
-        if(tutor.role===UserRole.Tutor) return appointmentObject.save();
-        throw new HttpException('invalid tutor id',HttpStatus.NOT_ACCEPTABLE);
+        return appointmentObject.save();
     }
 
-    getAllAppointments(): Promise<Appointment[]> {
+    find(): Promise<Appointment[]> {
         return this.model.find().exec();
     }
 
