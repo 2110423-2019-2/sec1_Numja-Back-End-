@@ -55,14 +55,23 @@ export class AppointmentService {
         appointmentDTO: Partial<Appointment>,
     ): Promise<Appointment> {
         const appointment = await this.findById(id);
-        if((appointment.status===AppointmentStatus.Approved&&appointmentDTO.status===AppointmentStatus.Finished)||
-        (appointment.status===AppointmentStatus.Approved&&appointmentDTO.status===AppointmentStatus.Cancelled)||
-        (appointment.status===AppointmentStatus.Pending&&appointmentDTO.status===AppointmentStatus.Cancelled))
-        return this.model
-            .findOneAndUpdate({ id, student: { id: userId } }, appointmentDTO, {
-                new: true,
-            })
-            .exec();
+        if (
+            (appointment.status === AppointmentStatus.Approved &&
+                appointmentDTO.status === AppointmentStatus.Finished) ||
+            (appointment.status === AppointmentStatus.Approved &&
+                appointmentDTO.status === AppointmentStatus.Cancelled) ||
+            (appointment.status === AppointmentStatus.Pending &&
+                appointmentDTO.status === AppointmentStatus.Cancelled)
+        )
+            return this.model
+                .findOneAndUpdate(
+                    { id, student: { id: userId } },
+                    appointmentDTO,
+                    {
+                        new: true,
+                    },
+                )
+                .exec();
     }
 
     async updateTutorAppointmentStatus(
@@ -71,12 +80,23 @@ export class AppointmentService {
         appointmentDTO: Partial<Appointment>,
     ): Promise<Appointment> {
         const appointment = await this.findById(id);
-        if(appointment.status===AppointmentStatus.Pending)
-        return this.model
-            .findOneAndUpdate({ id, tutor: { id: userId } }, appointmentDTO, {
-                new: true,
-            })
-            .exec();
+        if (
+            (appointment.status === AppointmentStatus.Pending &&
+                appointmentDTO.status===AppointmentStatus.Rejected) ||
+            (appointment.status === AppointmentStatus.Pending &&
+                appointmentDTO.status===AppointmentStatus.Approved)||
+            (appointment.status === AppointmentStatus.Approved &&
+                appointmentDTO.status === AppointmentStatus.Cancelled)
+        )
+            return this.model
+                .findOneAndUpdate(
+                    { id, tutor: { id: userId } },
+                    appointmentDTO,
+                    {
+                        new: true,
+                    },
+                )
+                .exec();
     }
 
     async updateStudentAppointmentInfo(
@@ -85,11 +105,15 @@ export class AppointmentService {
         editAppointmentDTO: Partial<EditAppointmentDTO>,
     ): Promise<Appointment> {
         const appointment = await this.findById(id);
-        if(appointment.status===AppointmentStatus.Pending)
-        return this.model
-            .findOneAndUpdate({ id, student: { id: userId } }, editAppointmentDTO, {
-                new: true,
-            })
-            .exec();
+        if (appointment.status === AppointmentStatus.Pending)
+            return this.model
+                .findOneAndUpdate(
+                    { id, student: { id: userId } },
+                    editAppointmentDTO,
+                    {
+                        new: true,
+                    },
+                )
+                .exec();
     }
 }
