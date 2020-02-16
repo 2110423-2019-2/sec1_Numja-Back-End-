@@ -46,7 +46,7 @@ export class AppointmentController {
 
     @Patch('cancel/:id')
     cancelAppointment(@Param('id') id: string, @UserId() userId: string) {
-        return this.service.updateStudentAppointment(id, userId, {
+        return this.service.updateStudentAppointmentStatus(id, userId, {
             status: AppointmentStatus.Cancelled,
         });
     }
@@ -57,26 +57,26 @@ export class AppointmentController {
         @Body() editObject: Partial<AppointmentDTO>,
         @UserId() userId: string,
     ) {
-        return this.service.updateStudentAppointment(id, userId, editObject);
+        return this.service.updateStudentAppointmentInfo(id, userId, editObject);
     }
 
     @Patch('accept/:id')
     acceptAppointment(@Param('id') id: string, @UserId() userId: string) {
-        return this.service.updateTutorAppointment(id, userId, {
+        return this.service.updateTutorAppointmentStatus(id, userId, {
             status: AppointmentStatus.Approved,
         });
     }
 
     @Patch('reject/:id')
     rejectAppointment(@Param('id') id: string, @UserId() userId: string) {
-        return this.service.updateTutorAppointment(id, userId, {
+        return this.service.updateTutorAppointmentStatus(id, userId, {
             status: AppointmentStatus.Cancelled,
         });
     }
 
     @Patch('finalize/:id')
     finalizeAppointment(@Param('id') id: string, @UserId() userId: string) {
-        return this.service.updateStudentAppointment(id, userId, {
+        return this.service.updateStudentAppointmentStatus(id, userId, {
             status: AppointmentStatus.Finished,
         });
     }
