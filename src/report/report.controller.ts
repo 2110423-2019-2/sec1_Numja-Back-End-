@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, NotFoundException, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ReportService } from './report.service';
 import { AuthGuard } from '../guards/auth.guard';
@@ -31,7 +31,7 @@ export class ReportController {
     @Roles(UserRole.Admin)
     @Get('system')
     findSystemReports() {
-        return this.service.find({ type: ReportType.User });
+        return this.service.find({ type: ReportType.System });
     }
 
     @Roles(UserRole.Admin)
