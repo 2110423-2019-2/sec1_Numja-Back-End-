@@ -1,9 +1,14 @@
-import { Controller, Get, Param, Post, Body, Patch } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Patch, UseGuards } from '@nestjs/common';
 import { AppointmentService } from './appointment.service';
 import { UserId } from 'src/decorators/user-id.decorator';
 import { AppointmentDTO } from './appointment.dto';
 import { AppointmentStatus } from 'src/enum/appointment.enum';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from 'src/guards/auth.guard';
 
+@ApiBearerAuth()
+@ApiTags('Admin')
+@UseGuards(AuthGuard)
 @Controller('appointment')
 export class AppointmentController {
     constructor(private readonly service: AppointmentService) {}
