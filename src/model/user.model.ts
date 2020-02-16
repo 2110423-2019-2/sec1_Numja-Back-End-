@@ -9,11 +9,11 @@ export class User {
         return this._id;
     }
 
-    @ApiProperty()
+    @ApiProperty({ required: true })
     @prop({ required: true })
     firstName: string;
 
-    @ApiProperty()
+    @ApiProperty({ required: true })
     @prop({ required: true })
     lastName: string;
 
@@ -21,11 +21,11 @@ export class User {
     @prop()
     birthDate?: Date;
 
-    @ApiProperty()
+    @ApiProperty({ required: true })
     @prop({ required: true })
     email: string;
 
-    @ApiProperty()
+    @ApiProperty({ required: true })
     @prop({ required: true, select: false })
     password: string;
 
@@ -33,15 +33,15 @@ export class User {
     @prop()
     address?: string;
 
-    @ApiProperty({ enum: UserGender })
+    @ApiProperty({ enum: UserGender, required: true })
     @prop({ enum: UserGender, required: true })
     gender: UserGender;
 
-    @ApiProperty()
+    @ApiProperty({ required: true })
     @prop({ required: true })
     ssin: string;
 
-    @ApiProperty({ enum: UserRole })
+    @ApiProperty({ enum: UserRole, required: true })
     @prop({ enum: UserRole, required: true })
     role: UserRole;
 
