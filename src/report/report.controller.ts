@@ -19,7 +19,7 @@ export class ReportController {
     @Roles(UserRole.Admin)
     @Get()
     find() {
-        return this.service.find({});
+        return this.service.find();
     }
 
     @Roles(UserRole.Admin)

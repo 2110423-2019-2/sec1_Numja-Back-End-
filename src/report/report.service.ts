@@ -14,7 +14,7 @@ export class ReportService {
         private readonly userService: UserService,
     ) {}
 
-    find(filters): Promise<Report[]> {
+    find(filters?): Promise<Report[]> {
         return this.model.find(filters).exec();
     }
 
