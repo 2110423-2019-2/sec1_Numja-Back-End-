@@ -22,7 +22,7 @@ export class AppointmentController {
     constructor(private readonly service: AppointmentService) {}
 
     @Post('create')
-    createAppointment(
+    create(
         @Body() createAppointmentDTO: CreateAppointmentDTO,
         @UserId() studentId: string,
     ) {
