@@ -21,10 +21,7 @@ export class AppointmentService {
     ): Promise<Appointment> {
         const tutor = await this.userService.findById(tutorId);
         if (tutor.role !== UserRole.Tutor)
-            throw new HttpException(
-                'Invalid tutorId',
-                HttpStatus.NOT_FOUND
-            );
+            throw new HttpException('Invalid tutorId', HttpStatus.NOT_FOUND);
         const student = await this.userService.findById(studentId);
         const appointmentObject = new this.model({
             ...createAppointmentDTO,
