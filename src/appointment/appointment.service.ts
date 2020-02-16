@@ -44,9 +44,9 @@ export class AppointmentService {
 
     async findByUserId(userId: string): Promise<Appointment[]> {
         const user = await this.userService.findById(userId);
-        const searchObject = {};
-        searchObject[user.role] = user;
-        return this.model.find(searchObject).exec();
+        if (user.role === UserRole.Student)
+            return this.model.find({ student: user });
+        else return this.model.find({ tutor: user }).exec();
     }
 
     async updateStudentAppointmentStatus(
