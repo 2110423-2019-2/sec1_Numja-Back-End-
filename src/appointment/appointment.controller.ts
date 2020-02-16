@@ -2,6 +2,7 @@ import { Controller, Get, Param, Post, Body, Patch } from '@nestjs/common';
 import { AppointmentService } from './appointment.service';
 import { UserId } from 'src/decorators/user-id.decorator';
 import { AppointmentDTO } from './appointment.dto';
+import { AppointmentStatus } from 'src/enum/appointment.enum';
 
 @Controller('appointment')
 export class AppointmentController {
@@ -30,12 +31,40 @@ export class AppointmentController {
         return this.service.findByUserId(userId);
     }
 
-    @Patch()
-    cancelAppointment() {}
+    @Patch('id/:id')
+    cancelAppointment(@Param('id') id: string, @UserId() userId: string) {
+        return this.service.updateStudentAppointment(id, userId, {
+            status: AppointmentStatus.Cancelled,
+        });
+    }
 
-    @Patch()
-    acceptAppointment() {}
+    @Patch('id/:id')
+    editAppintment(
+        @Param('id') id: string,
+        @Body() editObject: Partial<AppointmentDTO>,
+        @UserId() userId: string,
+    ) {
+        return this.service.updateStudentAppointment(id, userId, editObject);
+    }
 
-    @Patch()
-    finishAppointment() {}
+    @Patch('id/:id')
+    acceptAppointment(@Param('id') id: string, @UserId() userId: string) {
+        return this.service.updateTutorAppointment(id, userId, {
+            status: AppointmentStatus.Approved,
+        });
+    }
+
+    @Patch('id/:id')
+    rejectAppointment(@Param('id') id: string, @UserId() userId: string) {
+        return this.service.updateTutorAppointment(id, userId, {
+            status: AppointmentStatus.Cancelled,
+        });
+    }
+
+    @Patch('id/:id')
+    finalizeAppointment(@Param('id') id: string, @UserId() userId: string) {
+        return this.service.updateStudentAppointment(id, userId, {
+            status: AppointmentStatus.Finished,
+        });
+    }
 }
