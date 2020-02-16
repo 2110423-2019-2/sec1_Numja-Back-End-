@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
 import { Appointment } from 'src/model/appointment.model';
+import {AppointmentStatus} from 'src/enum/appointment.enum'
 import { ReturnModelType } from '@typegoose/typegoose';
-import { AppointmentDTO } from './appointment.dto';
+import { AppointmentDTO, EditAppointmentDTO } from './appointment.dto';
 import { UserService } from 'src/user/user.service';
 import { UserRole } from 'src/enum/user.enum';
 
@@ -22,13 +23,14 @@ export class AppointmentService {
         const tutor = await this.userService.findById(appointment.tutorId);
         const appointmentObject = new this.model({
             startTime: appointment.startTime,
-            endtime: appointment.endTime,
+            endTime: appointment.endTime,
             location: appointment.location,
             price: appointment.price,
             student,
             tutor,
         });
-        return appointmentObject.save();
+        if(tutor.role===UserRole.Tutor) return appointmentObject.save();
+        throw new HttpException('invalid tutor id',HttpStatus.NOT_ACCEPTABLE);
     }
 
     getAllAppointments(): Promise<Appointment[]> {
@@ -46,11 +48,15 @@ export class AppointmentService {
         return this.model.find(searchObject).exec();
     }
 
-    async updateStudentAppointment(
+    async updateStudentAppointmentStatus(
         id: string,
         userId: string,
         appointmentDTO: Partial<Appointment>,
     ): Promise<Appointment> {
+        const appointment = await this.findById(id);
+        if((appointment.status===AppointmentStatus.Approved&&appointmentDTO.status===AppointmentStatus.Finished)||
+        (appointment.status===AppointmentStatus.Approved&&appointmentDTO.status===AppointmentStatus.Cancelled)||
+        (appointment.status===AppointmentStatus.Pending&&appointmentDTO.status===AppointmentStatus.Cancelled))
         return this.model
             .findOneAndUpdate({ id, student: { id: userId } }, appointmentDTO, {
                 new: true,
@@ -58,13 +64,28 @@ export class AppointmentService {
             .exec();
     }
 
-    async updateTutorAppointment(
+    async updateTutorAppointmentStatus(
         id: string,
         userId: string,
         appointmentDTO: Partial<Appointment>,
     ): Promise<Appointment> {
+        const appointment = await this.findById(id);
+        if(appointment.status===AppointmentStatus.Pending)
         return this.model
             .findOneAndUpdate({ id, tutor: { id: userId } }, appointmentDTO, {
+                new: true,
+            })
+            .exec();
+    }
+
+    async updateStudentAppointmentInfo(
+        id: string,
+        userId: string,
+        editAppointmentDTO: Partial<EditAppointmentDTO>,
+    ): Promise<Appointment> {
+        const appointment = await this.findById(id);
+        return this.model
+            .findOneAndUpdate({ id, student: { id: userId } }, editAppointmentDTO, {
                 new: true,
             })
             .exec();
