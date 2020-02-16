@@ -14,7 +14,7 @@ export class ReportService {
         private readonly userService: UserService,
     ) {}
 
-    getAllReports(): Promise<Report[]> {
+    find(): Promise<Report[]> {
         return this.model.find().exec();
     }
 
@@ -22,11 +22,11 @@ export class ReportService {
         return this.model.findById(id).exec();
     }
 
-    getUserReports(): Promise<Report[]> {
+    findUserReports(): Promise<Report[]> {
         return this.model.find({ type: ReportType.User }).exec();
     }
 
-    getSystemReports(): Promise<Report[]> {
+    findSystemReports(): Promise<Report[]> {
         return this.model.find({ type: ReportType.System }).exec();
     }
 
