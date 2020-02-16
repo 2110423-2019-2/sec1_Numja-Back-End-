@@ -22,8 +22,8 @@ export class AppointmentService {
         const tutor = await this.userService.findById(tutorId);
         if (tutor.role !== UserRole.Tutor)
             throw new HttpException(
-                'Invalid tutor id',
-                HttpStatus.NOT_ACCEPTABLE,
+                'Invalid tutorId',
+                HttpStatus.NOT_FOUND
             );
         const student = await this.userService.findById(studentId);
         const appointmentObject = new this.model({
