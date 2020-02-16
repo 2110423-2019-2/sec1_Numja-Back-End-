@@ -7,6 +7,7 @@ import { UserId } from '../decorators/user-id.decorator';
 import { RolesGuard } from '../guards/roles.guard';
 import { Roles } from '../decorators/roles.decorator';
 import { UserRole } from '../enum/user.enum';
+import { ReportType } from '../enum/report.enum';
 
 @ApiBearerAuth()
 @ApiTags('Report')
@@ -18,19 +19,19 @@ export class ReportController {
     @Roles(UserRole.Admin)
     @Get()
     find() {
-        return this.service.find();
+        return this.service.find({});
     }
 
     @Roles(UserRole.Admin)
     @Get('user')
     findUserReports() {
-        return this.service.findUserReports();
+        return this.service.find({ type: ReportType.User });
     }
 
     @Roles(UserRole.Admin)
     @Get('system')
     findSystemReports() {
-        return this.service.findSystemReports();
+        return this.service.find({ type: ReportType.User });
     }
 
     @Roles(UserRole.Admin)
