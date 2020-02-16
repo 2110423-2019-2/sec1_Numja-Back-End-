@@ -45,12 +45,15 @@ export class AppointmentService {
         return this.model.find(searchObject).exec();
     }
 
-    updateStatus(
+    async updateAppointment(
         id: string,
+        userId: string,
         appointmentDTO: Partial<Appointment>,
     ): Promise<Appointment> {
         return this.model
-            .findByIdAndUpdate(id, { status: appointmentDTO }, { new: true })
+            .findOneAndUpdate({ id, student: { id: userId } }, appointmentDTO, {
+                new: true,
+            })
             .exec();
     }
 }
