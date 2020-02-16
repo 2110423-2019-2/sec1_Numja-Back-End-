@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
 import { Appointment } from 'src/model/appointment.model';
 import { AppointmentStatus } from 'src/enum/appointment.enum';
@@ -21,7 +21,7 @@ export class AppointmentService {
     ): Promise<Appointment> {
         const tutor = await this.userService.findById(tutorId);
         if (tutor.role !== UserRole.Tutor)
-            throw new HttpException('Invalid tutorId', HttpStatus.NOT_FOUND);
+            throw new NotFoundException('Invalid tutorId');
         const student = await this.userService.findById(studentId);
         const appointmentObject = new this.model({
             ...createAppointmentDTO,
