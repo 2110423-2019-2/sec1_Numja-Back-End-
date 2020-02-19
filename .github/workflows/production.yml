@@ -53,7 +53,7 @@ jobs:
         uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
           version: "270.0.0"
-          service_account_key: ${{ secrets.GCLOUD_SERVICE_KEY }}
+          service_account_key: ${{ secrets.GCLOUD_SERVICE_KEY_BASE64 }}
       - name: Create .env
         run: |
           cat > .env << EOF1
