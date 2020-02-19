@@ -50,6 +50,7 @@ jobs:
       - name: Create .env
         run: |
           cat > .env << EOF1
+          NODE_ENV=production
           GCLOUD_PROJECT_ID={{ secrets.GCLOUD_PROJECT_ID }}
           GCLOUD_SERVICE_KEY={{ secrets.GCLOUD_SERVICE_KEY }}
           MONGO_URL={{ secrets.MONGO_URL }}
