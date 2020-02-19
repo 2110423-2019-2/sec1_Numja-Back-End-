@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - master
-
 jobs:
   test:
     name: Run test
@@ -53,17 +52,17 @@ jobs:
         run: |
           cat > .env << EOF1
           NODE_ENV=production
-          GCLOUD_PROJECT_ID={{ secrets.GCLOUD_PROJECT_ID }}
-          GCLOUD_SERVICE_KEY={{ secrets.GCLOUD_SERVICE_KEY }}
-          MONGO_URL={{ secrets.MONGO_URL }}
-          SECRET={{ secrets.SECRET }}
+          GCLOUD_PROJECT_ID=${{ secrets.GCLOUD_PROJECT_ID }}
+          GCLOUD_SERVICE_KEY=${{ secrets.GCLOUD_SERVICE_KEY }}
+          MONGO_URL=${{ secrets.MONGO_URL }}
+          SECRET=${{ secrets.SECRET }}
           EOF1
       - name: Deploy service to Cloud Run
         uses: stefda/action-cloud-run@1.0.0
         with:
           image: gcr.io/{{ secrets.GCLOUD_PROJECT_ID }}/numja-backend
           service: numja-backend
-          project: {{ secrets.GCLOUD_PROJECT_ID }}
+          project: ${{ secrets.GCLOUD_PROJECT_ID }}
           region: asia-east1
           env: .env
           service key: ${{ secrets.GCLOUD_SERVICE_KEY }}
