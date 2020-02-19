@@ -1,0 +1,26 @@
+version: "3.2"
+
+services:
+  backend:
+    container_name: numja-backend
+    image: node:10
+    volumes:
+      - .:/server
+    command: sh -c 'cd /server && yarn && yarn start:dev'
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: development
+      MONGO_URL: mongodb://mongo:27017/numja
+    depends_on:
+      - mongo
+
+  mongo:
+    container_name: numja-mongo
+    image: mongo:4
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./volumes/mongodb:/data/db
+      - ./volumes/mongodb_config:/data/configdb
