@@ -56,15 +56,9 @@ A step by step series of examples that tell you how to get a development env run
 git clone https://github.com/<your-github-user>/sec1_Numja-Back-End-.git
 ```
 
-3. Install dependencies
+3. Create file named `.env`, then copy `example.env` and fill the details
 
-```
-yarn
-```
-
-4. Create file named `.env`, then copy `example.env` and fill the details
-
-5. Run the project using docker
+4. Run the project using docker
 
 ```
 docker-compose up
@@ -72,6 +66,12 @@ docker-compose up
 or run in background
 ```
 docker-compose up -d
+```
+
+To start server with local database, run:
+
+```
+docker-compose -f docker-compose.local.yml up (-d)
 ```
 
 ## Adding dependencies

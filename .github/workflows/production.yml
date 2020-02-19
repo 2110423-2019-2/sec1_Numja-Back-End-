@@ -1,0 +1,70 @@
+name: Deploy production
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  test:
+    name: Run test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '10'
+      - name: Install dependencies
+        run: yarn
+      - name: Run test
+        run: yarn test
+  build:
+    name: Build docker image and push to GCR
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Build NestJS project
+        run: yarn build
+      - name: Publish docker image
+        uses: raccoondev/push-docker-gcr@v1
+        with:
+          gcr_host: gcr.io
+          image_name: numja-backend
+          image_tag: ${{ github.sha }}
+        env:
+          GCLOUD_PROJECT_ID: ${{ secrets.GCLOUD_PROJECT_ID }}
+          GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
+  deploy:
+    name: Deploy to Cloud Run
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Setup gcloud CLI
+        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          version: "270.0.0"
+          service_account_key: ${{ secrets.GCLOUD_SERVICE_KEY }}
+      - name: Create .env
+        run: |
+          cat > .env << EOF1
+          NODE_ENV=production
+          GCLOUD_PROJECT_ID={{ secrets.GCLOUD_PROJECT_ID }}
+          GCLOUD_SERVICE_KEY={{ secrets.GCLOUD_SERVICE_KEY }}
+          MONGO_URL={{ secrets.MONGO_URL }}
+          SECRET={{ secrets.SECRET }}
+          EOF1
+      - name: Deploy service to Cloud Run
+        uses: stefda/action-cloud-run@1.0.0
+        with:
+          image: gcr.io/{{ secrets.GCLOUD_PROJECT_ID }}/numja-backend
+          service: numja-backend
+          project: {{ secrets.GCLOUD_PROJECT_ID }}
+          region: asia-east1
+          env: .env
+          service key: ${{ secrets.GCLOUD_SERVICE_KEY }}
+  
