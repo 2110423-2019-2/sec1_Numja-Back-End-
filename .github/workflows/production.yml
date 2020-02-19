@@ -71,5 +71,5 @@ jobs:
           project: ${{ secrets.GOOGLE_PROJECT_ID }}
           region: asia-east1
           env: .env
-          service key: ${{ secrets.GCLOUD_SERVICE_KEY }}
+          service key: ${{ secrets.GCLOUD_SERVICE_KEY_BASE64 }}
   
