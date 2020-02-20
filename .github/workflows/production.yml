@@ -66,7 +66,7 @@ jobs:
       - name: Deploy service to Cloud Run
         uses: stefda/action-cloud-run@v1.0
         with:
-          image: gcr.io/${{ secrets.GOOGLE_PROJECT_ID }}/numja-backend
+          image: gcr.io/${{ secrets.GOOGLE_PROJECT_ID }}/numja-backend:${{ github.sha }}
           service: numja-backend
           project: ${{ secrets.GOOGLE_PROJECT_ID }}
           region: asia-east1
