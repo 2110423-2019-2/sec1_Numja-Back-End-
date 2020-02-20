@@ -63,6 +63,8 @@ jobs:
           MONGO_URL=${{ secrets.MONGO_URL }}
           SECRET=${{ secrets.SECRET }}
           EOF1
+      - name: Install beta CLI
+        run: gcloud components install beta --quiet
       - name: Deploy service to Cloud Run
         run: |
           gcloud beta run deploy ${{ secrets.GCLOUD_APP_NAME }} --quiet \
