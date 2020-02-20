@@ -37,7 +37,7 @@ jobs:
         uses: raccoondev/push-docker-gcr@v1
         with:
           gcr_host: gcr.io
-          image_name: numja-backend
+          image_name: ${{ secrets.GCLOUD_APP_NAME }}
           image_tag: ${{ github.sha }}
         env:
           GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
@@ -64,12 +64,10 @@ jobs:
           SECRET=${{ secrets.SECRET }}
           EOF1
       - name: Deploy service to Cloud Run
-        uses: stefda/action-cloud-run@v1.0
-        with:
-          image: gcr.io/${{ secrets.GOOGLE_PROJECT_ID }}/numja-backend:${{ github.sha }}
-          service: numja-backend
-          project: ${{ secrets.GOOGLE_PROJECT_ID }}
-          region: asia-east1
-          env: .env
-          service key: ${{ secrets.GCLOUD_SERVICE_KEY_BASE64 }}
+        run: |
+          gcloud beta run deploy ${{ secrets.GCLOUD_APP_NAME }} --quiet \
+          --image gcr.io/${{ secrets.GCLOUD_PROJECT_ID }}/${{ secrets.GCLOUD_APP_NAME }}:${{ github.sha }} \
+          --project ${{ secrets.GCLOUD_PROJECT_ID }} \
+          --region asia-east1 --platform managed
+
   
