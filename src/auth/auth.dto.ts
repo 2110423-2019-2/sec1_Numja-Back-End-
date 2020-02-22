@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class AuthCredentialsDTO {
     @ApiProperty({ required: true })
-    email: string;
+    username: string;
 
     @ApiProperty({ required: true })
     password: string;
