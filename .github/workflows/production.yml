@@ -43,7 +43,6 @@ jobs:
           GCLOUD_SERVICE_KEY_BASE64=${{ secrets.GCLOUD_SERVICE_KEY_BASE64 }}
           MONGO_URL=${{ secrets.MONGO_URL }}
           SECRET=${{ secrets.SECRET }}
-          PORT=3000
           EOF1
       - name: Deploy service to Cloud Run
         uses: stefda/action-cloud-run@v1.0
