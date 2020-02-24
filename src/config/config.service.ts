@@ -29,7 +29,7 @@ export class ConfigService
         const options: JwtModuleOptions = {
             secret: this.secret,
         };
-        if (this.getEnv('NODE_ENV') === 'development') {
+        if (this.getEnv('NODE_ENV') === 'production') {
             options.signOptions = { expiresIn: '60d' };
         }
         return options;

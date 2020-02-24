@@ -1,8 +1,8 @@
-name: Deploy production
+name: Deploy staging
 on:
   push:
     branches:
-      - master
+      - staging
 jobs:
   test:
     name: Run test
@@ -34,23 +34,23 @@ jobs:
       - name: Build NestJS project
         run: yarn build
       - name: Build docker image
-        run: docker build -t gcr.io/${{ secrets.GOOGLE_PROJECT_ID }}/numja-backend:${{ github.sha }} .
+        run: docker build -t gcr.io/${{ secrets.STAGING_GOOGLE_PROJECT_ID }}/numja-backend:${{ github.sha }} .
       - name: Create .env
         run: |
           cat > .env << EOF1
-          NODE_ENV=production
-          GOOGLE_PROJECT_ID=${{ secrets.GOOGLE_PROJECT_ID }}
-          GCLOUD_SERVICE_KEY_BASE64=${{ secrets.GCLOUD_SERVICE_KEY_BASE64 }}
-          MONGO_URL=${{ secrets.MONGO_URL }}
+          NODE_ENV=staging
+          GOOGLE_PROJECT_ID=${{ secrets.STAGING_GOOGLE_PROJECT_ID }}
+          GCLOUD_SERVICE_KEY_BASE64=${{ secrets.STAGING_GCLOUD_SERVICE_KEY_BASE64 }}
+          MONGO_URL=${{ secrets.STAGING_MONGO_URL }}
           SECRET=${{ secrets.SECRET }}
           EOF1
       - name: Deploy service to Cloud Run
         uses: stefda/action-cloud-run@v1.0
         with:
-          image: gcr.io/${{ secrets.GOOGLE_PROJECT_ID }}/numja-backend:${{ github.sha }}
+          image: gcr.io/${{ secrets.STAGING_GOOGLE_PROJECT_ID }}/numja-backend:${{ github.sha }}
           service: numja-backend
-          project: ${{ secrets.GOOGLE_PROJECT_ID }}
+          project: ${{ secrets.STAGING_GOOGLE_PROJECT_ID }}
           region: asia-east1
           env: .env
-          service key: ${{ secrets.GCLOUD_SERVICE_KEY_BASE64 }}
+          service key: ${{ secrets.STAGING_GCLOUD_SERVICE_KEY_BASE64 }}
   
