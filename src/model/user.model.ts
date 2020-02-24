@@ -47,7 +47,4 @@ export class User {
 
     @prop({ enum: UserStatus, required: true, default: UserStatus.Active })
     status?: UserStatus;
-
-    @prop({ required: true, default: 0})
-    credit: number;
 }

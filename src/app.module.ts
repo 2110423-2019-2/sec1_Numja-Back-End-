@@ -10,7 +10,6 @@ import { AdminModule } from './admin/admin.module';
 import { JwtMiddleware } from './middlewares/jwt.middleware';
 import { AppointmentModule } from './appointment/appointment.module';
 import { ReportModule } from './report/report.module';
-import { CreditModule } from './credit/credit.module';
 
 @Module({
     imports: [
@@ -23,7 +22,6 @@ import { CreditModule } from './credit/credit.module';
         ReportModule,
         AdminModule,
         AppointmentModule,
-        CreditModule,
     ],
     controllers: [AppController],
     providers: [AppService],
