@@ -11,6 +11,7 @@ import { ReturnModelType } from '@typegoose/typegoose';
 import { UserService } from '../user/user.service';
 import { UserRole, UserStatus } from '../enum/user.enum';
 import { TransactionType } from '../enum/transaction.enum';
+import { AdminTransferTransactionDTO } from './transaction.dto';
 
 @Injectable()
 export class TransactionService {
@@ -22,15 +23,19 @@ export class TransactionService {
 
     async transfer(
         issuerId: string,
-        senderId: string,
-        receiverId: string,
-        amount: number,
+        { senderId, receiverId, amount }: AdminTransferTransactionDTO,
+        type: TransactionType,
     ) {
+        let sender, receiver;
         const issuer = await this.userService.findById(issuerId);
-        const sender = await this.userService.findById(senderId);
-        const receiver = await this.userService.findById(receiverId);
+        if (senderId) {
+            sender = await this.userService.findById(senderId);
+        }
+        if (receiverId) {
+            receiver = await this.userService.findById(receiverId);
+        }
         const transaction = new this.model({
-            type: TransactionType.Transfer,
+            type,
             issuer,
             sender,
             receiver,
@@ -42,26 +47,27 @@ export class TransactionService {
             issuer.status === UserStatus.Suspended
         )
             throw new ForbiddenException('User is suspended');
-        if (amount < 50)
-            throw new BadRequestException('Minimum transfer is 50 Numja');
-        if (!sender) throw new NotFoundException('Invalid sender ID');
-        if (!receiver) throw new NotFoundException('Invalid receiver ID');
-        if (sender.credit == 0 || sender.credit < amount)
+
+        if (sender.credit < amount)
             throw new BadRequestException('Sender credit is insufficient');
 
         const session = await this.model.db.startSession();
         session.startTransaction();
         try {
-            await this.userService.update(
-                senderId,
-                { ...sender, credit: sender.credit - amount },
-                session,
-            );
-            await this.userService.update(
-                receiverId,
-                { ...receiver, credit: receiver.credit + amount },
-                session,
-            );
+            if (senderId) {
+                await this.userService.update(
+                    senderId,
+                    { ...sender, credit: sender.credit - amount },
+                    session,
+                );
+            }
+            if (receiverId) {
+                await this.userService.update(
+                    receiverId,
+                    { ...receiver, credit: receiver.credit + amount },
+                    session,
+                );
+            }
             await session.commitTransaction();
             return transaction.save();
         } catch (e) {

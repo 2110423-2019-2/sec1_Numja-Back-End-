@@ -12,10 +12,10 @@ export class Transaction {
     issuer: Ref<User>;
 
     @prop({ ref: User })
-    sender: Ref<User>;
+    sender?: Ref<User>;
 
     @prop({ ref: User })
-    receiver: Ref<User>;
+    receiver?: Ref<User>;
 
     @prop({ require: true })
     amount: number;

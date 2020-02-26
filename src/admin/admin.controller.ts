@@ -9,6 +9,7 @@ import { UserRole } from '../enum/user.enum';
 import { AdminTransferTransactionDTO } from '../transaction/transaction.dto';
 import { UserId } from '../decorators/user-id.decorator';
 import { TransactionService } from '../transaction/transaction.service';
+import { TransactionType } from '../enum/transaction.enum';
 
 @ApiBearerAuth()
 @ApiTags('Admin')
@@ -34,13 +35,12 @@ export class AdminController {
     @Post('transfer')
     transfer(
         @UserId() issuerId: string,
-        @Body() { senderId, receiverId, amount }: AdminTransferTransactionDTO,
+        @Body() transactionDTO: AdminTransferTransactionDTO,
     ) {
         return this.transactionService.transfer(
             issuerId,
-            senderId,
-            receiverId,
-            amount,
+            transactionDTO,
+            TransactionType.Transfer,
         );
     }
 }
