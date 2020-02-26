@@ -1,5 +1,6 @@
 import {
     BadRequestException,
+    ForbiddenException,
     Injectable,
     InternalServerErrorException,
     NotFoundException,
@@ -40,8 +41,9 @@ export class TransactionService {
             issuer.role !== UserRole.Admin &&
             issuer.status === UserStatus.Suspended
         )
-            if (amount < 50)
-                throw new BadRequestException('Minimum transfer is 50 Numja');
+            throw new ForbiddenException('User is suspended');
+        if (amount < 50)
+            throw new BadRequestException('Minimum transfer is 50 Numja');
         if (!sender) throw new NotFoundException('Invalid sender ID');
         if (!receiver) throw new NotFoundException('Invalid receiver ID');
         if (sender.credit == 0 || sender.credit < amount)
