@@ -22,6 +22,7 @@ export class TransactionService {
     ) {}
 
     async transfer({
+    async createTransaction({
         type,
         issuerId,
         senderId,

@@ -37,7 +37,7 @@ export class AdminController {
         @UserId() issuerId: string,
         @Body() transactionDTO: AdminTransferTransactionDTO,
     ) {
-        return this.transactionService.transfer({
+        return this.transactionService.createTransaction({
             type: TransactionType.Transfer,
             issuerId,
             ...transactionDTO,
