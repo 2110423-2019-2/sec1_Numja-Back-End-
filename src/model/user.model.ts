@@ -6,7 +6,7 @@ export class User {
     _id?: mongoose.Types.ObjectId;
 
     @ApiProperty({ required: true })
-    @prop({ required: true })
+    @prop({ required: true, unique: true })
     username: string;
 
     @ApiProperty({ required: true })
@@ -22,7 +22,7 @@ export class User {
     birthDate?: Date;
 
     @ApiProperty({ required: true })
-    @prop({ required: true })
+    @prop({ required: true, unique: true })
     email: string;
 
     @ApiProperty({ required: true })
