@@ -3,6 +3,7 @@ import { ReturnModelType } from '@typegoose/typegoose';
 import { User } from '../model/user.model';
 import { InjectModel } from 'nestjs-typegoose';
 import { hashSync } from 'bcryptjs';
+import { ClientSession } from 'mongoose';
 
 @Injectable()
 export class UserService {
@@ -35,7 +36,18 @@ export class UserService {
         return user.save();
     }
 
-    update(id: string, userDTO: Partial<User>): Promise<User> {
-        return this.model.findByIdAndUpdate(id, userDTO, { new: true }).exec();
+    update(
+        id: string,
+        userDTO: Partial<User>,
+        session?: ClientSession,
+    ): Promise<User> {
+        if (!session)
+            return this.model
+                .findByIdAndUpdate(id, userDTO, { new: true })
+                .exec();
+        return this.model
+            .findByIdAndUpdate(id, userDTO, { new: true })
+            .session(session)
+            .exec();
     }
 }
