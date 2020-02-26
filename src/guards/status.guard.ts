@@ -1,6 +1,7 @@
 import {
     CanActivate,
     ExecutionContext,
+    ForbiddenException,
     Inject,
     Injectable,
 } from '@nestjs/common';
@@ -18,8 +19,11 @@ export class StatusGuard implements CanActivate {
         const req: Request = context.switchToHttp().getRequest();
         if (req.userId) {
             const user = await this.userService.findById(req.userId);
-            return user.status === UserStatus.Active;
+            if (user.status !== UserStatus.Active) {
+                throw new ForbiddenException('User is suspended');
+            }
+            return true;
         }
-        return false;
+        throw new ForbiddenException('User is suspended');
     }
 }
