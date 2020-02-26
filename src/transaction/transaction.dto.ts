@@ -4,8 +4,8 @@ import { TransactionType } from '../enum/transaction.enum';
 export class TransactionDTO {
     type: TransactionType;
     issuerId: string;
-    senderId: string;
-    receiverId: string;
+    senderId?: string;
+    receiverId?: string;
     amount: number;
 }
 
