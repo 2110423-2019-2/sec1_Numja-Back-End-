@@ -5,9 +5,9 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 export class User {
     _id?: mongoose.Types.ObjectId;
 
-    get id() {
-        return this._id;
-    }
+    @ApiProperty({ required: true })
+    @prop({ required: true })
+    username: string;
 
     @ApiProperty({ required: true })
     @prop({ required: true })

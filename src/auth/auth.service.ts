@@ -28,8 +28,11 @@ export class AuthService {
         return this.sign(user);
     }
 
-    async validateUser({ email, password }: AuthCredentialsDTO): Promise<User> {
-        const user: User = await this.userService.findOne({ email }, true);
+    async validateUser({
+        username,
+        password,
+    }: AuthCredentialsDTO): Promise<User> {
+        const user: User = await this.userService.findOne({ username }, true);
         if (user && compareSync(password, user.password)) {
             return user;
         }
@@ -37,7 +40,7 @@ export class AuthService {
     }
 
     sign(user: User): string {
-        return this.jwtService.sign({ userId: user.id });
+        return this.jwtService.sign({ userId: user._id });
     }
 
     verify(jwt: string): { userId: string } {
