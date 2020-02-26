@@ -1,5 +1,5 @@
-import { Controller, Body, Patch, UseGuards, Post } from '@nestjs/common';
-import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import { Body, Controller, Patch, Post, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AdminService } from './admin.service';
 import { Roles } from 'src/decorators/roles.decorator';
 import { RolesGuard } from 'src/guards/roles.guard';
@@ -37,10 +37,10 @@ export class AdminController {
         @UserId() issuerId: string,
         @Body() transactionDTO: AdminTransferTransactionDTO,
     ) {
-        return this.transactionService.transfer(
+        return this.transactionService.transfer({
+            type: TransactionType.Transfer,
             issuerId,
-            transactionDTO,
-            TransactionType.Transfer,
-        );
+            ...transactionDTO,
+        });
     }
 }
