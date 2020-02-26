@@ -37,7 +37,7 @@ export class TransactionService {
         if (receiverId) {
             receiver = await this.userService.findById(receiverId);
         }
-        
+
         const transaction = new this.model({
             type,
             issuer,
@@ -68,7 +68,7 @@ export class TransactionService {
             }
             await session.commitTransaction();
             return transaction.save();
-        } catch (e) {
+        } catch {
             await session.abortTransaction();
             throw new InternalServerErrorException();
         }
