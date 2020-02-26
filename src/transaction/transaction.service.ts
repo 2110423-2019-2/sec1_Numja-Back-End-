@@ -59,14 +59,14 @@ export class TransactionService {
             if (senderId) {
                 await this.userService.update(
                     senderId,
-                    { ...sender, credit: sender.credit - amount },
+                    { credit: sender.credit - amount },
                     session,
                 );
             }
             if (receiverId) {
                 await this.userService.update(
                     receiverId,
-                    { ...receiver, credit: receiver.credit + amount },
+                    { credit: receiver.credit + amount },
                     session,
                 );
             }
