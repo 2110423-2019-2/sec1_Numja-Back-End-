@@ -21,7 +21,6 @@ export class TransactionService {
         private readonly userService: UserService,
     ) {}
 
-    async transfer({
     async createTransaction({
         type,
         issuerId,
