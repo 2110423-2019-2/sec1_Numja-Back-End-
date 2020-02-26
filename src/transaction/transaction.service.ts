@@ -30,12 +30,14 @@ export class TransactionService {
     }: TransactionDTO) {
         let sender, receiver;
         const issuer = await this.userService.findById(issuerId);
+
         if (senderId) {
             sender = await this.userService.findById(senderId);
         }
         if (receiverId) {
             receiver = await this.userService.findById(receiverId);
         }
+        
         const transaction = new this.model({
             type,
             issuer,
@@ -43,12 +45,6 @@ export class TransactionService {
             receiver,
             amount,
         });
-
-        if (
-            issuer.role !== UserRole.Admin &&
-            issuer.status === UserStatus.Suspended
-        )
-            throw new ForbiddenException('User is suspended');
 
         if (sender.credit < amount)
             throw new BadRequestException('Sender credit is insufficient');
