@@ -1,5 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { TransactionType } from '../enum/transaction.enum';
+import { IsString, IsNumber, IsPositive } from 'class-validator';
+import { ToInt } from 'class-sanitizer';
 
 export class TransactionDTO {
     type: TransactionType;
