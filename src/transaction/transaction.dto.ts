@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { TransactionType } from '../enum/transaction.enum';
-import { Base } from '@typegoose/typegoose/lib/defaultClasses';
 
 export class TransactionDTO {
     type: TransactionType;
