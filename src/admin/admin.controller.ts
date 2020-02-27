@@ -6,10 +6,10 @@ import { RolesGuard } from 'src/guards/roles.guard';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { SuspendOrActivateDTO } from './admin.dto';
 import { UserRole } from '../enum/user.enum';
-import { AdminTransferTransactionDTO } from '../transaction/transaction.dto';
 import { UserId } from '../decorators/user-id.decorator';
 import { TransactionService } from '../transaction/transaction.service';
 import { TransactionType } from '../enum/transaction.enum';
+import { TransferTransactionDTO } from 'src/transaction/transaction.dto';
 
 @ApiBearerAuth()
 @ApiTags('Admin')
@@ -35,7 +35,7 @@ export class AdminController {
     @Post('transfer')
     transfer(
         @UserId() issuerId: string,
-        @Body() transactionDTO: AdminTransferTransactionDTO,
+        @Body() transactionDTO: TransferTransactionDTO,
     ) {
         return this.transactionService.createTransaction({
             type: TransactionType.Transfer,

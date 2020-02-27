@@ -21,14 +21,3 @@ export class TransferTransactionDTO extends BaseTransactionDTO {
     @ApiProperty({ required: true })
     receiverId: string;
 }
-
-export class AdminTransferTransactionDTO {
-    @ApiProperty({ required: true })
-    senderId: string;
-
-    @ApiProperty({ required: true })
-    receiverId: string;
-
-    @ApiProperty({ required: true })
-    amount: number;
-}
