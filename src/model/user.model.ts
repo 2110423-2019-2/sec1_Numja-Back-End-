@@ -1,7 +1,14 @@
 import { prop, mongoose } from '@typegoose/typegoose';
 import { UserGender, UserRole, UserStatus } from '../enum/user.enum';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsString, IsDate, IsEmail, IsOptional, IsEnum, IsNumber } from 'class-validator';
+import {
+    IsString,
+    IsDate,
+    IsEmail,
+    IsOptional,
+    IsEnum,
+    IsNumber,
+} from 'class-validator';
 import { ToDate } from 'class-sanitizer';
 
 export class User {
