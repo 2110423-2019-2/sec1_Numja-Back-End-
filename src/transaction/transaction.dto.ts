@@ -9,13 +9,15 @@ export class TransactionDTO {
     amount: number;
 }
 
-export class AdminTransferTransactionDTO {
+export class BaseTransactionDTO {
+    @ApiProperty({ required: true })
+    amount: number;
+}
+
+export class TransferTransactionDTO extends BaseTransactionDTO {
     @ApiProperty({ required: true })
     senderId: string;
 
     @ApiProperty({ required: true })
     receiverId: string;
-
-    @ApiProperty({ required: true })
-    amount: number;
 }

@@ -11,7 +11,7 @@ import { ReturnModelType } from '@typegoose/typegoose';
 import { UserService } from '../user/user.service';
 import { UserRole, UserStatus } from '../enum/user.enum';
 import { TransactionType } from '../enum/transaction.enum';
-import { AdminTransferTransactionDTO, TransactionDTO } from './transaction.dto';
+import { TransactionDTO } from './transaction.dto';
 
 @Injectable()
 export class TransactionService {
@@ -21,7 +21,7 @@ export class TransactionService {
         private readonly userService: UserService,
     ) {}
 
-    async transfer({
+    async createTransaction({
         type,
         issuerId,
         senderId,
