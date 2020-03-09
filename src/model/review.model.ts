@@ -11,8 +11,8 @@ export class Review {
     description: string;
 
     @prop({ ref: User, required: true })
-    reviewer: Ref<User>;
+    reviewerUser: Ref<User>;
 
     @prop({ ref: User })
-    tutor: Ref<User>;
+    reviewedUser: Ref<User>;
 }
