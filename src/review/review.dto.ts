@@ -8,5 +8,5 @@ export class ReviewDTO {
     description: string;
 
     @ApiProperty({ required: true })
-    reportedUserId: string;
+    reviewedUserId: string;
 }
