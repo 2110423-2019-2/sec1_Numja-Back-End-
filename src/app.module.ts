@@ -11,6 +11,7 @@ import { JwtMiddleware } from './middlewares/jwt.middleware';
 import { AppointmentModule } from './appointment/appointment.module';
 import { ReportModule } from './report/report.module';
 import { TransactionModule } from './transaction/transaction.module';
+import { SanitizerMiddleware } from './middlewares/sanitizer.middleware';
 
 @Module({
     imports: [
@@ -30,6 +31,6 @@ import { TransactionModule } from './transaction/transaction.module';
 })
 export class AppModule {
     configure(consumer: MiddlewareConsumer) {
-        consumer.apply(JwtMiddleware).forRoutes('*');
+        consumer.apply(JwtMiddleware, SanitizerMiddleware).forRoutes('*');
     }
 }
