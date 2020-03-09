@@ -12,6 +12,7 @@ import { AppointmentModule } from './appointment/appointment.module';
 import { ReportModule } from './report/report.module';
 import { TransactionModule } from './transaction/transaction.module';
 import { SanitizerMiddleware } from './middlewares/sanitizer.middleware';
+import { ReviewModule } from './review/review.module';
 
 @Module({
     imports: [
@@ -25,6 +26,7 @@ import { SanitizerMiddleware } from './middlewares/sanitizer.middleware';
         AdminModule,
         AppointmentModule,
         TransactionModule,
+        ReviewModule,
     ],
     controllers: [AppController],
     providers: [AppService],
