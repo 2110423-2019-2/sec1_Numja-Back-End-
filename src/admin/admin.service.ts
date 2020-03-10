@@ -1,6 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { UserStatus } from '../enum/user.enum';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { UserStatus, UserRole } from '../enum/user.enum';
 import { UserService } from 'src/user/user.service';
+import { ReturnModelType } from '@typegoose/typegoose';
+import { InjectModel } from 'nestjs-typegoose';
+import { User } from 'src/model/user.model';
 
 @Injectable()
 export class AdminService {

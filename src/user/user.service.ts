@@ -4,6 +4,8 @@ import { User } from '../model/user.model';
 import { InjectModel } from 'nestjs-typegoose';
 import { hashSync } from 'bcryptjs';
 import { ClientSession } from 'mongoose';
+import { UserRole } from 'src/enum/user.enum';
+import { EvidenceDTO } from 'src/model/evidence.dto';
 
 @Injectable()
 export class UserService {
@@ -33,7 +35,42 @@ export class UserService {
     create({ password, ...userDTO }: User): Promise<User> {
         password = hashSync(password, 12);
         const user = new this.model({ ...userDTO, password });
+        if (user.role === UserRole.Tutor) {
+            user.verified = false;
+        }
         return user.save();
+    }
+
+    verifyTutor(id: string): Promise<User> {
+        return this.model
+            .findByIdAndUpdate(
+                id,
+                { verified: true },
+                {
+                    new: true,
+                },
+            )
+            .exec();
+    }
+
+    findTutor(): Promise<User[]> {
+        return this.model
+            .find({
+                role: UserRole.Tutor,
+            })
+            .exec();
+    }
+
+    updateEvidence(id: string, evidence: EvidenceDTO): Promise<User> {
+        return this.model
+            .findByIdAndUpdate(
+                id,
+                { ...evidence },
+                {
+                    new: true,
+                },
+            )
+            .exec();
     }
 
     update(

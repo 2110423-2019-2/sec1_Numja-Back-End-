@@ -50,4 +50,13 @@ export class User {
 
     @prop({ required: true, default: 0 })
     credit: number;
+
+    @prop({ default: '' })
+    evidenceInfo: String;
+
+    @prop({ default: '' })
+    evidenceSentDate: Date | string;
+
+    @prop({ default: true })
+    verified: boolean;
 }
