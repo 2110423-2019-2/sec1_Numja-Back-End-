@@ -13,6 +13,6 @@ export class Review {
     @prop({ ref: User })
     reviewedUser: Ref<User>;
 
-    @prop({ required: true, min: 1, max: 5})
+    @prop({ required: true, min: 1, max: 5 })
     rating: number;
 }

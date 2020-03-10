@@ -31,7 +31,10 @@ export class ReviewService {
         return this.find({ reviewerUser: reviewerUser });
     }
 
-    async create(createReviewDTO: CreateReviewDTO, reviewerId: string): Promise<Review> {
+    async create(
+        createReviewDTO: CreateReviewDTO,
+        reviewerId: string,
+    ): Promise<Review> {
         const reviewerUser = await this.userService.findById(reviewerId);
         const reviewedUser = await this.userService.findById(
             createReviewDTO.reviewedUserId,
@@ -47,9 +50,8 @@ export class ReviewService {
 
     update(
         id: string,
-        updateReviewDTO: Partial<UpdateReviewDTO>
-        ): Promise<Review>{
+        updateReviewDTO: Partial<UpdateReviewDTO>,
+    ): Promise<Review> {
         return this.model.findByIdAndUpdate(id, updateReviewDTO).exec();
     }
-
 }
