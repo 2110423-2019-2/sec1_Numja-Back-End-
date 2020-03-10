@@ -57,7 +57,7 @@ export class ReviewController {
     @Patch(':id')
     update(
         @Param('id') id: string,
-        @Body() updateReviewDTO: Partial<UpdateReviewDTO>,
+        @Body() updateReviewDTO: UpdateReviewDTO,
     ) {
         return this.service.update(id, updateReviewDTO);
     }
