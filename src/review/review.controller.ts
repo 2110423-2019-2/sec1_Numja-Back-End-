@@ -54,7 +54,7 @@ export class ReviewController {
         return this.service.findById(id);
     }
 
-    @Patch(':id/update')
+    @Patch(':id')
     update(
         @Param('id') id: string,
         @Body() updateReviewDTO: Partial<UpdateReviewDTO>,
