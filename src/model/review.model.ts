@@ -4,8 +4,8 @@ import { User } from './user.model';
 export class Review {
     _id?: mongoose.Types.ObjectId;
 
-    @prop({ required: true })
-    comment: string;
+    @prop()
+    comment?: string;
 
     @prop({ ref: User, required: true })
     reviewerUser: Ref<User>;
