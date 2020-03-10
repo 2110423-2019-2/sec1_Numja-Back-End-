@@ -25,7 +25,10 @@ export class ReviewController {
 
     @Roles(UserRole.Student, UserRole.Tutor)
     @Post('create')
-    create(@Body() createReviewDTO: CreateReviewDTO, @UserId() reviewerId: string) {
+    create(
+        @Body() createReviewDTO: CreateReviewDTO,
+        @UserId() reviewerId: string,
+    ) {
         return this.service.create(createReviewDTO, reviewerId);
     }
 
@@ -53,10 +56,9 @@ export class ReviewController {
 
     @Patch(':id/update')
     update(
-        @Param('id') id:string,
-        @Body() updateReviewDTO: Partial<UpdateReviewDTO>
-        ){
-            return this.service.update(id,updateReviewDTO);
-        }
-
+        @Param('id') id: string,
+        @Body() updateReviewDTO: Partial<UpdateReviewDTO>,
+    ) {
+        return this.service.update(id, updateReviewDTO);
+    }
 }
