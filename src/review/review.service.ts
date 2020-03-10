@@ -50,7 +50,7 @@ export class ReviewService {
 
     update(
         id: string,
-        updateReviewDTO: Partial<UpdateReviewDTO>,
+        updateReviewDTO: UpdateReviewDTO,
     ): Promise<Review> {
         return this.model.findByIdAndUpdate(id, updateReviewDTO).exec();
     }
