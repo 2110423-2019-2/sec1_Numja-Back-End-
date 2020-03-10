@@ -2,10 +2,10 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class ReviewDTO {
     @ApiProperty({ required: true })
-    title: string;
+    comment: string;
 
     @ApiProperty({ required: true })
-    description: string;
+    rating: number;
 
     @ApiProperty({ required: true })
     reviewedUserId: string;
