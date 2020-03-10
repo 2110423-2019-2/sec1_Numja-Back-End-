@@ -2,10 +2,10 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateReviewDTO {
     @ApiProperty()
-    comment: string;
+    comment?: string;
 
     @ApiProperty()
-    rating: number;
+    rating?: number;
 }
 
 export class CreateReviewDTO{
