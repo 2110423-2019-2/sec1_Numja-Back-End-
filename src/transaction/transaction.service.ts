@@ -1,17 +1,13 @@
 import {
     BadRequestException,
-    ForbiddenException,
     Injectable,
     InternalServerErrorException,
-    NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
 import { Transaction } from '../model/transaction.model';
 import { ReturnModelType } from '@typegoose/typegoose';
 import { UserService } from '../user/user.service';
-import { UserRole, UserStatus } from '../enum/user.enum';
-import { TransactionType } from '../enum/transaction.enum';
-import { AdminTransferTransactionDTO, TransactionDTO } from './transaction.dto';
+import { TransactionDTO } from './transaction.dto';
 
 @Injectable()
 export class TransactionService {
@@ -21,7 +17,7 @@ export class TransactionService {
         private readonly userService: UserService,
     ) {}
 
-    async transfer({
+    async createTransaction({
         type,
         issuerId,
         senderId,
@@ -46,8 +42,9 @@ export class TransactionService {
             amount,
         });
 
-        if (sender.credit < amount)
+        if (sender.credit < amount) {
             throw new BadRequestException('Sender credit is insufficient');
+        }
 
         const session = await this.model.db.startSession();
         session.startTransaction();

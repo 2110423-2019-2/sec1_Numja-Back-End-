@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Get, Param } from '@nestjs/common';
+import { Controller, UseGuards, Get, Post, Body, Param } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { AuthGuard } from '../guards/auth.guard';
@@ -8,6 +8,8 @@ import { RolesGuard } from '../guards/roles.guard';
 import { StatusGuard } from '../guards/status.guard';
 import { UserRole } from '../enum/user.enum';
 import { Roles } from '../decorators/roles.decorator';
+import { EvidenceDTO } from 'src/model/evidence.dto';
+
 
 @ApiBearerAuth()
 @ApiTags('User')
@@ -34,4 +36,11 @@ export class UserController {
         return this.service.findById(id);
     }
 
+    @UseGuards(AuthGuard)
+    @Roles(UserRole.Tutor)
+    @Post('updateEvidence')
+    updateEvidence(@UserId() id: string, @Body() EvidenceDTO: EvidenceDTO) {
+        return this.service.updateEvidence(id, EvidenceDTO);
+    }
+  
 }
