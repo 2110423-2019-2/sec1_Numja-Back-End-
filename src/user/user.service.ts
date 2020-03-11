@@ -41,11 +41,11 @@ export class UserService {
         return user.save();
     }
 
-    verifyTutor(id: string): Promise<User> {
+    updateTutor(id: string,verifiedStatus: boolean): Promise<User> {
         return this.model
             .findByIdAndUpdate(
                 id,
-                { verified: true },
+                { verified: verifiedStatus },
                 {
                     new: true,
                 },
@@ -65,7 +65,7 @@ export class UserService {
         return this.model
             .findByIdAndUpdate(
                 id,
-                { ...evidence },
+                { ...evidence, evidenceSentDate : new Date()  },
                 {
                     new: true,
                 },

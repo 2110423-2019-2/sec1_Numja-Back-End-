@@ -55,9 +55,14 @@ export class AdminController {
         });
     }
 
-    @Get('verifyTutor/:id')
+    @Post('verifyTutor/:id')
     verifyTutor(@Param('id') id: string) {
-        return this.userService.verifyTutor(id);
+        return this.userService.updateTutor(id,true);
+    }
+
+    @Post('unverifyTutor/:id')
+    unverifyTutor(@Param('id') id: string) {
+        return this.userService.updateTutor(id,false);
     }
 
     @Get('allTutor')

@@ -51,10 +51,10 @@ export class User {
     @prop({ required: true, default: 0 })
     credit: number;
 
-    @prop({ default: '' })
+    @prop({ default: '-' })
     evidenceInfo: String;
 
-    @prop({ default: '' })
+    @prop({ default: '-' })
     evidenceSentDate: Date | string;
 
     @prop({ default: true })
