@@ -13,41 +13,41 @@ import { TransactionType } from 'src/enum/transaction.enum';
 export class TransactionController {
     constructor(private readonly service: TransactionService) {}
 
-    @Post('topup')
-    topup(
-        @Body() baseTransactionDTO: BaseTransactionDTO,
+    @Post('top-up')
+    topUp(
+        @Body() transactionDTO: BaseTransactionDTO,
         @UserId() userId: string,
     ) {
         return this.service.createTransaction({
-            type: TransactionType.Topup,
+            type: TransactionType.TopUp,
             issuerId: userId,
             receiverId: userId,
-            ...baseTransactionDTO,
+            ...transactionDTO,
         });
     }
 
     @Post('withdraw')
     withdraw(
-        @Body() baseTransactionDTO: BaseTransactionDTO,
+        @Body() transactionDTO: BaseTransactionDTO,
         @UserId() userId: string,
     ) {
         return this.service.createTransaction({
             type: TransactionType.Withdraw,
             issuerId: userId,
             senderId: userId,
-            ...baseTransactionDTO,
+            ...transactionDTO,
         });
     }
 
     @Post('transfer')
     transfer(
-        @Body() transferTransactionDTO: TransferTransactionDTO,
+        @Body() transactionDTO: TransferTransactionDTO,
         @UserId() userId: string,
     ) {
         return this.service.createTransaction({
             type: TransactionType.Transfer,
             issuerId: userId,
-            ...transferTransactionDTO,
+            ...transactionDTO,
         });
     }
 }
