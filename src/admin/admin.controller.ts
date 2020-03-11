@@ -1,4 +1,12 @@
-import { Body, Controller, Patch, Post, UseGuards } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Patch,
+    Post,
+    UseGuards,
+    Get,
+    Param,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AdminService } from './admin.service';
 import { Roles } from 'src/decorators/roles.decorator';
@@ -10,6 +18,8 @@ import { UserId } from '../decorators/user-id.decorator';
 import { TransactionService } from '../transaction/transaction.service';
 import { TransactionType } from '../enum/transaction.enum';
 import { TransferTransactionDTO } from 'src/transaction/transaction.dto';
+import { UserService } from 'src/user/user.service';
+import { User } from 'src/model/user.model';
 
 @ApiBearerAuth()
 @ApiTags('Admin')
@@ -20,6 +30,7 @@ export class AdminController {
     constructor(
         private readonly service: AdminService,
         private readonly transactionService: TransactionService,
+        private readonly userService: UserService,
     ) {}
 
     @Patch('suspend')
@@ -42,5 +53,20 @@ export class AdminController {
             issuerId,
             ...transactionDTO,
         });
+    }
+
+    @Post('verifyTutor/:id')
+    verifyTutor(@Param('id') id: string) {
+        return this.userService.updateTutor(id, true);
+    }
+
+    @Post('unverifyTutor/:id')
+    unverifyTutor(@Param('id') id: string) {
+        return this.userService.updateTutor(id, false);
+    }
+
+    @Get('allTutor')
+    allTutor(): Promise<User[]> {
+        return this.userService.findTutor();
     }
 }
