@@ -1,19 +1,37 @@
-import { Controller, UseGuards, Get } from '@nestjs/common';
+import { Controller, UseGuards, Get, Param } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { AuthGuard } from '../guards/auth.guard';
 import { UserId } from '../decorators/user-id.decorator';
 import { User } from '../model/user.model';
+import { RolesGuard } from '../guards/roles.guard';
+import { StatusGuard } from '../guards/status.guard';
+import { UserRole } from '../enum/user.enum';
+import { Roles } from '../decorators/roles.decorator';
 
 @ApiBearerAuth()
 @ApiTags('User')
+@UseGuards(AuthGuard, RolesGuard, StatusGuard)
 @Controller('user')
 export class UserController {
     constructor(private readonly service: UserService) {}
 
-    @UseGuards(AuthGuard)
+    @Roles(UserRole.Admin)
+    @Get()
+    find(): Promise<User[]> {
+        return this.service.find();
+    }
+
+    @Roles(UserRole.Admin, UserRole.Tutor, UserRole.Student)
     @Get('me')
     me(@UserId() id: string): Promise<User> {
         return this.service.findById(id);
     }
+
+    @Roles(UserRole.Admin, UserRole.Tutor, UserRole.Student)
+    @Get('id/:id')
+    findById(@Param('id') id: string): Promise<User> {
+        return this.service.findById(id);
+    }
+
 }
