@@ -13,7 +13,7 @@ export class CreateReviewDTO{
     reviewedUserId: string;
 
     @ApiProperty()
-    comment: string;
+    comment?: string;
 
     @ApiProperty({ required: true })
     rating: number;
