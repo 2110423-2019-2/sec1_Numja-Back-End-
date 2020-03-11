@@ -4,7 +4,7 @@ import { User } from '../model/user.model';
 import { InjectModel } from 'nestjs-typegoose';
 import { hashSync } from 'bcryptjs';
 import { ClientSession } from 'mongoose';
-import { UserRole } from 'src/enum/user.enum';
+import { UserRole } from '../enum/user.enum';
 import { EvidenceDTO } from 'src/model/evidence.dto';
 
 @Injectable()
@@ -41,7 +41,7 @@ export class UserService {
         return user.save();
     }
 
-    updateTutor(id: string,verifiedStatus: boolean): Promise<User> {
+    updateTutor(id: string, verifiedStatus: boolean): Promise<User> {
         return this.model
             .findByIdAndUpdate(
                 id,
@@ -61,11 +61,11 @@ export class UserService {
             .exec();
     }
 
-    updateEvidence(id: string, evidence: EvidenceDTO): Promise<User> {
+    updateEvidence(id: string, evidenceDTO: EvidenceDTO): Promise<User> {
         return this.model
             .findByIdAndUpdate(
                 id,
-                { ...evidence, evidenceSentDate : new Date()  },
+                evidenceDTO,
                 {
                     new: true,
                 },

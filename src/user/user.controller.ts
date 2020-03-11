@@ -4,7 +4,7 @@ import { UserService } from './user.service';
 import { AuthGuard } from '../guards/auth.guard';
 import { UserId } from '../decorators/user-id.decorator';
 import { User } from '../model/user.model';
-import { UserRole } from 'src/enum/user.enum';
+import { UserRole } from '../enum/user.enum';
 import { Roles } from 'src/decorators/roles.decorator';
 import { EvidenceDTO } from 'src/model/evidence.dto';
 
@@ -23,7 +23,7 @@ export class UserController {
     @UseGuards(AuthGuard)
     @Roles(UserRole.Tutor)
     @Post('updateEvidence')
-    updateEvidence(@UserId() id: string, @Body() evidence: EvidenceDTO) {
-        return this.service.updateEvidence(id, evidence);
+    updateEvidence(@UserId() id: string, @Body() EvidenceDTO: EvidenceDTO) {
+        return this.service.updateEvidence(id, EvidenceDTO);
     }
 }

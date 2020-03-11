@@ -57,12 +57,12 @@ export class AdminController {
 
     @Post('verifyTutor/:id')
     verifyTutor(@Param('id') id: string) {
-        return this.userService.updateTutor(id,true);
+        return this.userService.updateTutor(id, true);
     }
 
     @Post('unverifyTutor/:id')
     unverifyTutor(@Param('id') id: string) {
-        return this.userService.updateTutor(id,false);
+        return this.userService.updateTutor(id, false);
     }
 
     @Get('allTutor')
