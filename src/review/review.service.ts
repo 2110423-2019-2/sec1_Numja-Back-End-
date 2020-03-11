@@ -48,10 +48,9 @@ export class ReviewService {
         return reviewObject.save();
     }
 
-    update(
-        id: string,
-        updateReviewDTO: UpdateReviewDTO,
-    ): Promise<Review> {
-        return this.model.findByIdAndUpdate(id, updateReviewDTO).exec();
+    update(id: string, updateReviewDTO: UpdateReviewDTO): Promise<Review> {
+        return this.model
+            .findByIdAndUpdate(id, updateReviewDTO, { new: true })
+            .exec();
     }
 }
