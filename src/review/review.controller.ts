@@ -55,10 +55,7 @@ export class ReviewController {
     }
 
     @Patch(':id')
-    update(
-        @Param('id') id: string,
-        @Body() updateReviewDTO: UpdateReviewDTO,
-    ) {
+    update(@Param('id') id: string, @Body() updateReviewDTO: UpdateReviewDTO) {
         return this.service.update(id, updateReviewDTO);
     }
 }
