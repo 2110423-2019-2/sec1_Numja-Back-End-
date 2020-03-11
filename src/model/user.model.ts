@@ -77,10 +77,10 @@ export class User {
     credit: number;
 
     @prop({ default: "" })
-    evidenceInfo: String;
+    evidenceInfo?: String;
 
     @prop({ default: "" })
-    evidenceSentDate: Date;
+    evidenceSentDate?: Date;
 
     @prop({ default: true })
     verified: boolean;
