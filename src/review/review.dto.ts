@@ -8,7 +8,7 @@ export class UpdateReviewDTO {
     rating?: number;
 }
 
-export class CreateReviewDTO{
+export class CreateReviewDTO {
     @ApiProperty({ required: true })
     reviewedUserId: string;
 
