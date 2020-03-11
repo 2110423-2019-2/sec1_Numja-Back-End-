@@ -42,8 +42,8 @@ export class ReviewService {
         const reviewObject = new this.model({
             comment: createReviewDTO.comment,
             rating: createReviewDTO.rating,
-            reviewerUser: reviewerUser,
-            reviewedUser: reviewedUser,
+            reviewerUser,
+            reviewedUser,
         });
         return reviewObject.save();
     }
