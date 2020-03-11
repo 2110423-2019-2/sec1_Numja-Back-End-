@@ -75,4 +75,13 @@ export class User {
     @IsNumber()
     @prop({ required: true, default: 0 })
     credit: number;
+
+    @prop({ default: "" })
+    evidenceInfo?: String;
+
+    @prop({ default: "" })
+    evidenceSentDate?: Date;
+
+    @prop({ default: true })
+    verified: boolean;
 }
