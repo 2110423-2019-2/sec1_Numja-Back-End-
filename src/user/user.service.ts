@@ -13,7 +13,14 @@ export class UserService {
         @InjectModel(User) private readonly model: ReturnModelType<typeof User>,
     ) {}
 
-    find(): Promise<User[]> {
+    find(role?: UserRole): Promise<User[]> {
+        if(role) {
+            return this.model
+            .find({
+                role: role,
+            })
+            .exec();
+        }
         return this.model.find().exec();
     }
 
@@ -39,38 +46,6 @@ export class UserService {
             user.verified = false;
         }
         return user.save();
-    }
-
-    updateTutor(id: string, verifiedStatus: boolean): Promise<User> {
-        return this.model
-            .findByIdAndUpdate(
-                id,
-                { verified: verifiedStatus },
-                {
-                    new: true,
-                },
-            )
-            .exec();
-    }
-
-    findTutor(): Promise<User[]> {
-        return this.model
-            .find({
-                role: UserRole.Tutor,
-            })
-            .exec();
-    }
-
-    updateEvidence(id: string, evidenceDTO: EvidenceDTO): Promise<User> {
-        return this.model
-            .findByIdAndUpdate(
-                id,
-                evidenceDTO,
-                {
-                    new: true,
-                },
-            )
-            .exec();
     }
 
     update(
