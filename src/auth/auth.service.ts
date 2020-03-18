@@ -15,7 +15,9 @@ export class AuthService {
     async login(credentials: AuthCredentialsDTO): Promise<string> {
         const user = await this.validateUser(credentials);
         if (!user) {
-            throw new UnauthorizedException();
+            throw new UnauthorizedException(
+                'Username or Password is incorrect',
+            );
         }
         return this.sign(user);
     }
@@ -23,7 +25,7 @@ export class AuthService {
     async register(userDTO: User): Promise<string> {
         const user = await this.userService.create(userDTO);
         if (!user) {
-            throw new UnauthorizedException();
+            throw new UnauthorizedException('Username already exists');
         }
         return this.sign(user);
     }

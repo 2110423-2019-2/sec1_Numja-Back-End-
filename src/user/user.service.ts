@@ -14,12 +14,12 @@ export class UserService {
     ) {}
 
     find(role?: UserRole): Promise<User[]> {
-        if(role) {
+        if (role) {
             return this.model
-            .find({
-                role: role,
-            })
-            .exec();
+                .find({
+                    role: role,
+                })
+                .exec();
         }
         return this.model.find().exec();
     }
@@ -40,6 +40,9 @@ export class UserService {
     }
 
     create({ password, ...userDTO }: User): Promise<User> {
+        if (!this.model.exists({ username: userDTO.username })) {
+            return null;
+        }
         password = hashSync(password, 12);
         const user = new this.model({ ...userDTO, password });
         if (user.role === UserRole.Tutor) {
