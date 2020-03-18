@@ -4,11 +4,14 @@ import { UserService } from './user.service';
 import { AuthGuard } from '../guards/auth.guard';
 import { UserId } from '../decorators/user-id.decorator';
 import { User } from '../model/user.model';
+import { RolesGuard } from '../guards/roles.guard';
+import { StatusGuard } from '../guards/status.guard';
 import { UserRole } from '../enum/user.enum';
-import { Roles } from 'src/decorators/roles.decorator';
+import { Roles } from '../decorators/roles.decorator';
 import { EvidenceDTO } from 'src/model/evidence.dto';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { StatusGuard } from '../guards/status.guard';
+
 
 @ApiBearerAuth()
 @ApiTags('User')
@@ -41,4 +44,5 @@ export class UserController {
     updateEvidence(@UserId() id: string, @Body() EvidenceDTO: EvidenceDTO) {
         return this.service.update(id, EvidenceDTO);
     }
+  
 }
