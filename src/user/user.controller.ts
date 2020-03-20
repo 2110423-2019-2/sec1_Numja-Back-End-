@@ -37,7 +37,7 @@ export class UserController {
 
     @Roles(UserRole.Tutor)
     @Post('updateEvidence')
-    updateEvidence(@UserId() id: string, @Body() EvidenceDTO: EvidenceDTO) {
-        return this.service.update(id, EvidenceDTO);
+    updateEvidence(@UserId() id: string, @Body() evidenceDTO: EvidenceDTO) {
+        return this.service.update(id, evidenceDTO);
     }
 }

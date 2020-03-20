@@ -13,12 +13,10 @@ export class UserService {
         @InjectModel(User) private readonly model: ReturnModelType<typeof User>,
     ) {}
 
-    find(role?: UserRole): Promise<User[]> {
-        if (role) {
+    find(filter?: Partial<User>): Promise<User[]> {
+        if (filter) {
             return this.model
-                .find({
-                    role: role,
-                })
+                .find(filter)
                 .exec();
         }
         return this.model.find().exec();
@@ -40,9 +38,6 @@ export class UserService {
     }
 
     create({ password, ...userDTO }: User): Promise<User> {
-        if (!this.model.exists({ username: userDTO.username })) {
-            return null;
-        }
         password = hashSync(password, 12);
         const user = new this.model({ ...userDTO, password });
         if (user.role === UserRole.Tutor) {
