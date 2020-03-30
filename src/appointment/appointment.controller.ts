@@ -64,7 +64,7 @@ export class AppointmentController {
     @Patch(':id/edit')
     editAppointment(
         @Param('id') id: string,
-        @Body() editAppointmentDTO: Partial<EditAppointmentDTO>,
+        @Body() editAppointmentDTO: EditAppointmentDTO,
         @UserId() userId: string,
     ) {
         return this.service.updateStudentAppointmentInfo(
