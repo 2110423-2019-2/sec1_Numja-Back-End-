@@ -62,7 +62,7 @@ export class AppointmentController {
     }
 
     @Patch(':id/edit')
-    editAppintment(
+    editAppointment(
         @Param('id') id: string,
         @Body() editAppointmentDTO: Partial<EditAppointmentDTO>,
         @UserId() userId: string,
