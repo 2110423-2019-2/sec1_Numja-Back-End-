@@ -2,7 +2,7 @@ import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/commo
 import { InjectModel } from 'nestjs-typegoose';
 import { Appointment } from 'src/model/appointment.model';
 import { AppointmentStatus } from 'src/enum/appointment.enum';
-import { ReturnModelType, mongoose } from '@typegoose/typegoose';
+import { ReturnModelType} from '@typegoose/typegoose';
 import { CreateAppointmentDTO, EditAppointmentDTO } from './appointment.dto';
 import { UserService } from 'src/user/user.service';
 import { UserRole } from 'src/enum/user.enum';
