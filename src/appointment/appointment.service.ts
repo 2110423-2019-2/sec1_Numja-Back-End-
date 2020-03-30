@@ -104,11 +104,7 @@ export class AppointmentService {
         editAppointmentDTO: Partial<EditAppointmentDTO>,
     ): Promise<Appointment> {
         const appointment = await this.findById(id);
-        if(appointment.student+"" !== userId){
-            console.log(appointment.student,mongoose.Types.ObjectId(userId));
-            console.log(appointment.student,userId)
-            throw new ForbiddenException();
-        }
+        if(appointment.student+"" !== userId)throw new ForbiddenException();
         if (appointment.status === AppointmentStatus.Pending)
             return this.model
                 .findByIdAndUpdate(
