@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class EvidenceDTO {
     @ApiProperty({ required: true })
-    evidenceInfo: String;
+    evidenceInfo: string;
 
     @ApiProperty({ required: true })
     evidenceSentDate: Date;
