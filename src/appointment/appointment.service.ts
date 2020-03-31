@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+    Injectable,
+    NotFoundException,
+    ForbiddenException,
+} from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
 import { Appointment } from 'src/model/appointment.model';
 import { AppointmentStatus } from 'src/enum/appointment.enum';
@@ -52,6 +56,7 @@ export class AppointmentService {
         appointmentDTO: Partial<Appointment>,
     ): Promise<Appointment> {
         const appointment = await this.findById(id);
+        if (appointment.student + '' !== userId) throw new ForbiddenException();
         if (
             (appointment.status === AppointmentStatus.Approved &&
                 appointmentDTO.status === AppointmentStatus.Finished) ||
@@ -61,13 +66,9 @@ export class AppointmentService {
                 appointmentDTO.status === AppointmentStatus.Cancelled)
         )
             return this.model
-                .findOneAndUpdate(
-                    { id, student: { id: userId } },
-                    appointmentDTO,
-                    {
-                        new: true,
-                    },
-                )
+                .findByIdAndUpdate(id, appointmentDTO, {
+                    new: true,
+                })
                 .exec();
     }
 
@@ -77,6 +78,7 @@ export class AppointmentService {
         appointmentDTO: Partial<Appointment>,
     ): Promise<Appointment> {
         const appointment = await this.findById(id);
+        if (appointment.tutor + '' !== userId) throw new ForbiddenException();
         if (
             (appointment.status === AppointmentStatus.Pending &&
                 appointmentDTO.status === AppointmentStatus.Rejected) ||
@@ -86,13 +88,9 @@ export class AppointmentService {
                 appointmentDTO.status === AppointmentStatus.Cancelled)
         )
             return this.model
-                .findOneAndUpdate(
-                    { id, tutor: { id: userId } },
-                    appointmentDTO,
-                    {
-                        new: true,
-                    },
-                )
+                .findByIdAndUpdate(id, appointmentDTO, {
+                    new: true,
+                })
                 .exec();
     }
 
@@ -102,15 +100,12 @@ export class AppointmentService {
         editAppointmentDTO: Partial<EditAppointmentDTO>,
     ): Promise<Appointment> {
         const appointment = await this.findById(id);
+        if (appointment.student + '' !== userId) throw new ForbiddenException();
         if (appointment.status === AppointmentStatus.Pending)
             return this.model
-                .findOneAndUpdate(
-                    { id, student: { id: userId } },
-                    editAppointmentDTO,
-                    {
-                        new: true,
-                    },
-                )
+                .findByIdAndUpdate(id, editAppointmentDTO, {
+                    new: true,
+                })
                 .exec();
     }
 }

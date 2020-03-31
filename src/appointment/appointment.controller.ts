@@ -45,7 +45,7 @@ export class AppointmentController {
     }
 
     @Patch(':id/student/cancel')
-    cancelStudentAppointment(
+    studentCancelAppointment(
         @Param('id') id: string,
         @UserId() userId: string,
     ) {
@@ -55,16 +55,16 @@ export class AppointmentController {
     }
 
     @Patch(':id/tutor/cancel')
-    cancelTutorAppointment(@Param('id') id: string, @UserId() userId: string) {
+    tutorCancelAppointment(@Param('id') id: string, @UserId() userId: string) {
         return this.service.updateTutorAppointmentStatus(id, userId, {
             status: AppointmentStatus.Cancelled,
         });
     }
 
     @Patch(':id/edit')
-    editAppintment(
+    editAppointment(
         @Param('id') id: string,
-        @Body() editAppointmentDTO: Partial<EditAppointmentDTO>,
+        @Body() editAppointmentDTO: EditAppointmentDTO,
         @UserId() userId: string,
     ) {
         return this.service.updateStudentAppointmentInfo(
