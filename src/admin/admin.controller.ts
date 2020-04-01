@@ -57,16 +57,16 @@ export class AdminController {
 
     @Post('verifyTutor/:id')
     verifyTutor(@Param('id') id: string) {
-        return this.userService.update(id, { verified: true });
+        return this.userService.updateTutor(id, true);
     }
 
     @Post('unverifyTutor/:id')
     unverifyTutor(@Param('id') id: string) {
-        return this.userService.update(id, { verified: false });
+        return this.userService.updateTutor(id, false);
     }
 
-    @Get('findTutors')
-    findTutors(): Promise<User[]> {
-        return this.userService.find({role : UserRole.Tutor});
+    @Get('allTutor')
+    allTutor(): Promise<User[]> {
+        return this.userService.findTutor();
     }
 }
