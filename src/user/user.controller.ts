@@ -1,4 +1,13 @@
-import { Controller, UseGuards, Get, Post, Body, Param } from '@nestjs/common';
+import {
+    Controller,
+    UseGuards,
+    UseInterceptors,
+    Get,
+    Post,
+    Body,
+    Param,
+    UploadedFile,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { AuthGuard } from '../guards/auth.guard';
@@ -9,7 +18,8 @@ import { StatusGuard } from '../guards/status.guard';
 import { UserRole } from '../enum/user.enum';
 import { Roles } from '../decorators/roles.decorator';
 import { EvidenceDTO } from 'src/model/evidence.dto';
-
+import { FileInterceptor } from '@nestjs/platform-express';
+import { FileService } from '../file/file.service';
 
 @ApiBearerAuth()
 @ApiTags('User')
@@ -42,5 +52,10 @@ export class UserController {
     updateEvidence(@UserId() id: string, @Body() EvidenceDTO: EvidenceDTO) {
         return this.service.updateEvidence(id, EvidenceDTO);
     }
-  
+
+    @Post(':id/portfolio/upload')
+    @UseInterceptors(FileInterceptor('file', { dest: '/tmp/upload' }))
+    uploadPortfolio(@UserId() id: string, @UploadedFile() file) {
+        return this.service.uploadPortfolio(`portfolio/${id}`, file);
+    }
 }
