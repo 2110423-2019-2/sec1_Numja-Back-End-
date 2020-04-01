@@ -6,11 +6,14 @@ import { hashSync } from 'bcryptjs';
 import { ClientSession } from 'mongoose';
 import { UserRole } from '../enum/user.enum';
 import { EvidenceDTO } from 'src/model/evidence.dto';
+import { FileService } from '../file/file.service';
+import { FileDTO } from '../file/file.dto';
 
 @Injectable()
 export class UserService {
     constructor(
         @InjectModel(User) private readonly model: ReturnModelType<typeof User>,
+        private readonly fileService: FileService,
     ) {}
 
     find(filter?: any): Promise<User[]> {
@@ -63,13 +66,9 @@ export class UserService {
 
     updateEvidence(id: string, evidenceDTO: EvidenceDTO): Promise<User> {
         return this.model
-            .findByIdAndUpdate(
-                id,
-                evidenceDTO,
-                {
-                    new: true,
-                },
-            )
+            .findByIdAndUpdate(id, evidenceDTO, {
+                new: true,
+            })
             .exec();
     }
 
@@ -86,5 +85,9 @@ export class UserService {
             .findByIdAndUpdate(id, userDTO, { new: true })
             .session(session)
             .exec();
+    }
+
+    uploadPortfolio(name: string, file: FileDTO) {
+        return this.fileService.upload(name, file);
     }
 }
