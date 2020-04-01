@@ -41,6 +41,38 @@ export class UserService {
         return user.save();
     }
 
+    updateTutor(id: string, verifiedStatus: boolean): Promise<User> {
+        return this.model
+            .findByIdAndUpdate(
+                id,
+                { verified: verifiedStatus },
+                {
+                    new: true,
+                },
+            )
+            .exec();
+    }
+
+    findTutor(): Promise<User[]> {
+        return this.model
+            .find({
+                role: UserRole.Tutor,
+            })
+            .exec();
+    }
+
+    updateEvidence(id: string, evidenceDTO: EvidenceDTO): Promise<User> {
+        return this.model
+            .findByIdAndUpdate(
+                id,
+                evidenceDTO,
+                {
+                    new: true,
+                },
+            )
+            .exec();
+    }
+
     update(
         id: string,
         userDTO: Partial<User>,

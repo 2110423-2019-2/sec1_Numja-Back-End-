@@ -13,6 +13,7 @@ import { ReportModule } from './report/report.module';
 import { TransactionModule } from './transaction/transaction.module';
 import { ReviewModule } from './review/review.module';
 import { SanitizerMiddleware } from './middlewares/sanitizer.middleware';
+import { FileModule } from './file/file.module';
 
 @Module({
     imports: [
@@ -27,6 +28,7 @@ import { SanitizerMiddleware } from './middlewares/sanitizer.middleware';
         AppointmentModule,
         TransactionModule,
         ReviewModule,
+        FileModule,
     ],
     controllers: [AppController],
     providers: [AppService],
