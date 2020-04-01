@@ -76,10 +76,10 @@ export class User {
     @prop({ required: true, default: 0 })
     credit: number;
 
-    @prop()
+    @prop({ default: "" })
     evidenceInfo?: String;
 
-    @prop()
+    @prop({ default: "" })
     evidenceSentDate?: Date;
 
     @prop({ default: true })
