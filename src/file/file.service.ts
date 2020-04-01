@@ -35,7 +35,7 @@ export class FileService {
         await this.bucket.upload(file.path, {
             destination: name,
             contentType: file.mimetype,
-            resumable: true,
+            resumable: false,
         });
         removeSync(file.path);
     }

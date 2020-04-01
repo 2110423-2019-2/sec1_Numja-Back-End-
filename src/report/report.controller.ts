@@ -2,9 +2,10 @@ import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ReportService } from './report.service';
 import { AuthGuard } from '../guards/auth.guard';
+import { RolesGuard } from '../guards/roles.guard';
+import { StatusGuard } from '../guards/status.guard';
 import { SystemReportDTO, UserReportDTO } from './report.dto';
 import { UserId } from '../decorators/user-id.decorator';
-import { RolesGuard } from '../guards/roles.guard';
 import { Roles } from '../decorators/roles.decorator';
 import { UserRole } from '../enum/user.enum';
 import { ReportType } from '../enum/report.enum';
@@ -40,6 +41,7 @@ export class ReportController {
         return this.service.findById(id);
     }
 
+    @UseGuards(StatusGuard)
     @Roles(UserRole.Student, UserRole.Tutor)
     @Post('user')
     createUserReport(
