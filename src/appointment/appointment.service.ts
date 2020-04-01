@@ -35,8 +35,8 @@ export class AppointmentService {
         return appointmentObject.save();
     }
 
-    find(): Promise<Appointment[]> {
-        return this.model.find().exec();
+    find(filter?: Object): Promise<Appointment[]> {
+        return this.model.find(filter).exec();
     }
 
     findById(id: string): Promise<Appointment> {
