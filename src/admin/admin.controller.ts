@@ -65,8 +65,8 @@ export class AdminController {
         return this.userService.updateTutor(id, false);
     }
 
-    @Get('allTutor')
-    allTutor(): Promise<User[]> {
-        return this.userService.findTutor();
+    @Get('findTutors')
+    findTutors(): Promise<User[]> {
+        return this.userService.find({ role: UserRole.Tutor });
     }
 }
