@@ -19,14 +19,14 @@ export class AuthService {
     async login(credentials: AuthCredentialsDTO): Promise<string> {
         const user = await this.validateUser(credentials);
         if (!user) {
-            throw new UnauthorizedException();
+            throw new UnauthorizedException('username or password is incorrect');
         }
         return this.sign(user);
     }
 
     async register(userDTO: User): Promise<string> {
-        if (await this.userService.findOne(userDTO.username)) {
-            throw new BadRequestException('Username ID already exists');
+        if (await this.userService.findOne({ username: userDTO.username })) {
+            throw new BadRequestException('username ID already exists');
         }
         const user = await this.userService.create(userDTO);
         if (!user) {
