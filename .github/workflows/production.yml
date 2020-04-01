@@ -1,0 +1,56 @@
+name: Deploy production
+on:
+  push:
+    branches:
+      - master
+jobs:
+  test:
+    name: Run test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '10'
+      - name: Install dependencies
+        uses: bahmutov/npm-install@v1
+      - name: Run test
+        run: yarn test
+  build_and_deploy:
+    name: Build docker image and deploy to Cloud Run
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '10'
+      - name: Install dependencies
+        uses: bahmutov/npm-install@v1
+      - name: Build NestJS project
+        run: yarn build
+      - name: Build docker image
+        run: docker build -t gcr.io/${{ secrets.GOOGLE_PROJECT_ID }}/numja-backend:${{ github.sha }} .
+      - name: Create .env
+        run: |
+          cat > .env << EOF1
+          NODE_ENV=production
+          GOOGLE_PROJECT_ID=${{ secrets.GOOGLE_PROJECT_ID }}
+          GCLOUD_SERVICE_KEY_BASE64=${{ secrets.GCLOUD_SERVICE_KEY_BASE64 }}
+          MONGO_URL=${{ secrets.MONGO_URL }}
+          SECRET=${{ secrets.SECRET }}
+          EOF1
+      - name: Deploy service to Cloud Run
+        uses: stefda/action-cloud-run@v1.0
+        with:
+          image: gcr.io/${{ secrets.GOOGLE_PROJECT_ID }}/numja-backend:${{ github.sha }}
+          service: numja-backend
+          project: ${{ secrets.GOOGLE_PROJECT_ID }}
+          region: asia-east1
+          env: .env
+          service key: ${{ secrets.GCLOUD_SERVICE_KEY_BASE64 }}
+  

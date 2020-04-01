@@ -1,8 +1,12 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+    Injectable,
+    UnauthorizedException,
+    BadRequestException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { User } from '../model/user.model';
-import { compareSync } from 'bcrypt';
+import { compareSync } from 'bcryptjs';
 import { AuthCredentialsDTO } from './auth.dto';
 
 @Injectable()
@@ -15,12 +19,15 @@ export class AuthService {
     async login(credentials: AuthCredentialsDTO): Promise<string> {
         const user = await this.validateUser(credentials);
         if (!user) {
-            throw new UnauthorizedException();
+            throw new UnauthorizedException('username or password is incorrect');
         }
         return this.sign(user);
     }
 
     async register(userDTO: User): Promise<string> {
+        if (await this.userService.findOne({ username: userDTO.username })) {
+            throw new BadRequestException('username ID already exists');
+        }
         const user = await this.userService.create(userDTO);
         if (!user) {
             throw new UnauthorizedException();
@@ -28,8 +35,11 @@ export class AuthService {
         return this.sign(user);
     }
 
-    async validateUser({ email, password }: AuthCredentialsDTO): Promise<User> {
-        const user: User = await this.userService.findOne({ email }, true);
+    async validateUser({
+        username,
+        password,
+    }: AuthCredentialsDTO): Promise<User> {
+        const user: User = await this.userService.findOne({ username }, true);
         if (user && compareSync(password, user.password)) {
             return user;
         }
@@ -37,7 +47,7 @@ export class AuthService {
     }
 
     sign(user: User): string {
-        return this.jwtService.sign({ userId: user.id });
+        return this.jwtService.sign({ userId: user._id });
     }
 
     verify(jwt: string): { userId: string } {

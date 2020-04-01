@@ -1,50 +1,87 @@
 import { prop, mongoose } from '@typegoose/typegoose';
 import { UserGender, UserRole, UserStatus } from '../enum/user.enum';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import {
+    IsString,
+    IsDate,
+    IsEmail,
+    IsOptional,
+    IsEnum,
+    IsNumber,
+} from 'class-validator';
+import { ToDate } from 'class-sanitizer';
 
 export class User {
     _id?: mongoose.Types.ObjectId;
 
-    get id() {
-        return this._id;
-    }
+    @ApiProperty({ required: true })
+    @IsString()
+    @prop({ required: true, unique: true })
+    username: string;
 
-    @ApiProperty()
+    @ApiProperty({ required: true })
+    @IsString()
     @prop({ required: true })
     firstName: string;
 
-    @ApiProperty()
+    @ApiProperty({ required: true })
+    @IsString()
     @prop({ required: true })
     lastName: string;
 
     @ApiPropertyOptional()
+    @IsDate()
+    @ToDate()
     @prop()
     birthDate?: Date;
 
-    @ApiProperty()
-    @prop({ required: true })
+    @ApiProperty({ required: true })
+    @IsEmail()
+    @prop({ required: true, unique: true })
     email: string;
 
-    @ApiProperty()
+    @ApiProperty({ required: true })
+    @IsString()
     @prop({ required: true, select: false })
     password: string;
 
     @ApiPropertyOptional()
+    @IsOptional()
+    @IsString()
     @prop()
     address?: string;
 
-    @ApiProperty({ enum: UserGender })
+    @ApiProperty({ enum: UserGender, required: true })
+    @IsEnum(UserGender)
     @prop({ enum: UserGender, required: true })
     gender: UserGender;
 
-    @ApiProperty()
+    @ApiProperty({ required: true })
+    @IsString()
     @prop({ required: true })
     ssin: string;
 
-    @ApiProperty({ enum: UserRole })
+    @ApiProperty({ enum: UserRole, required: true })
+    @IsEnum(UserRole)
     @prop({ enum: UserRole, required: true })
     role: UserRole;
 
+    @IsOptional()
+    @IsEnum(UserStatus)
     @prop({ enum: UserStatus, required: true, default: UserStatus.Active })
-    status?: UserStatus;
+    status: UserStatus;
+
+    @IsOptional()
+    @IsNumber()
+    @prop({ required: true, default: 0 })
+    credit: number;
+
+    @prop({ default: '' })
+    evidenceInfo?: String;
+
+    @prop({ default: '' })
+    evidenceSentDate?: Date;
+
+    @prop({ default: true })
+    verified: boolean;
 }
