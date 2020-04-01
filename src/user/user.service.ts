@@ -13,8 +13,8 @@ export class UserService {
         @InjectModel(User) private readonly model: ReturnModelType<typeof User>,
     ) {}
 
-    find(): Promise<User[]> {
-        return this.model.find().exec();
+    find(filter?: any): Promise<User[]> {
+        return this.model.find(filter).exec();
     }
 
     findById(id: string): Promise<User> {
