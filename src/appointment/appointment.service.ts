@@ -24,7 +24,7 @@ export class AppointmentService {
         { tutorId, ...createAppointmentDTO }: CreateAppointmentDTO,
         studentId: string,
     ): Promise<Appointment> {
-        if (createAppointmentDTO.endTime<createAppointmentDTO.startTime){
+        if (createAppointmentDTO.endTime < createAppointmentDTO.startTime) {
             throw new BadRequestException('Invalid start and end time');
         }
         const tutor = await this.userService.findById(tutorId);
@@ -32,12 +32,14 @@ export class AppointmentService {
             throw new NotFoundException('Invalid tutorId');
         const student = await this.userService.findById(studentId);
         const existedAppointment = await this.find({
-            startTime:{$lt:createAppointmentDTO.endTime},
-            endTime:{$gt:createAppointmentDTO.startTime},
+            startTime: { $lt: createAppointmentDTO.endTime },
+            endTime: { $gt: createAppointmentDTO.startTime },
             student,
-            status:{$in:[AppointmentStatus.Approved, AppointmentStatus.Pending]},
+            status: {
+                $in: [AppointmentStatus.Approved, AppointmentStatus.Pending],
+            },
         });
-        if(existedAppointment.length){
+        if (existedAppointment.length) {
             throw new BadRequestException('Overlapped appointment');
         }
         const appointmentObject = new this.model({
