@@ -63,13 +63,9 @@ export class UserService {
 
     updateEvidence(id: string, evidenceDTO: EvidenceDTO): Promise<User> {
         return this.model
-            .findByIdAndUpdate(
-                id,
-                evidenceDTO,
-                {
-                    new: true,
-                },
-            )
+            .findByIdAndUpdate(id, evidenceDTO, {
+                new: true,
+            })
             .exec();
     }
 

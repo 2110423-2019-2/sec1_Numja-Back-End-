@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+    Injectable,
+    UnauthorizedException,
+    BadRequestException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { User } from '../model/user.model';
@@ -21,8 +25,8 @@ export class AuthService {
     }
 
     async register(userDTO: User): Promise<string> {
-        if (await this.userService.exists(userDTO.username)) {
-            throw new UnauthorizedException('Username ID already exists');
+        if (await this.userService.findOne(userDTO.username)) {
+            throw new BadRequestException('Username ID already exists');
         }
         const user = await this.userService.create(userDTO);
         if (!user) {

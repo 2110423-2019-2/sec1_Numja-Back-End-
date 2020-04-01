@@ -10,7 +10,6 @@ import { UserRole } from '../enum/user.enum';
 import { Roles } from '../decorators/roles.decorator';
 import { EvidenceDTO } from 'src/model/evidence.dto';
 
-
 @ApiBearerAuth()
 @ApiTags('User')
 @UseGuards(AuthGuard, RolesGuard, StatusGuard)
@@ -42,5 +41,4 @@ export class UserController {
     updateEvidence(@UserId() id: string, @Body() EvidenceDTO: EvidenceDTO) {
         return this.service.updateEvidence(id, EvidenceDTO);
     }
-  
 }
