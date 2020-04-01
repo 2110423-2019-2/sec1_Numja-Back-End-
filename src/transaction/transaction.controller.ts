@@ -5,6 +5,7 @@ import { TransactionService } from './transaction.service';
 import { UserId } from 'src/decorators/user-id.decorator';
 import { BaseTransactionDTO, TransferTransactionDTO } from './transaction.dto';
 import { TransactionType } from 'src/enum/transaction.enum';
+import { StatusGuard } from '../guards/status.guard';
 
 @ApiBearerAuth()
 @ApiTags('Transaction')
@@ -13,6 +14,7 @@ import { TransactionType } from 'src/enum/transaction.enum';
 export class TransactionController {
     constructor(private readonly service: TransactionService) {}
 
+    @UseGuards(StatusGuard)
     @Post('top-up')
     topUp(
         @Body() transactionDTO: BaseTransactionDTO,
@@ -39,6 +41,7 @@ export class TransactionController {
         });
     }
 
+    @UseGuards(StatusGuard)
     @Post('transfer')
     transfer(
         @Body() transactionDTO: TransferTransactionDTO,
