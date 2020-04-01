@@ -27,7 +27,6 @@ import { SanitizerMiddleware } from './middlewares/sanitizer.middleware';
         AppointmentModule,
         TransactionModule,
         ReviewModule,
-        FileModule,
     ],
     controllers: [AppController],
     providers: [AppService],

@@ -23,6 +23,9 @@ export class AuthService {
     }
 
     async register(userDTO: User): Promise<string> {
+        if (await this.userService.exists(userDTO.username)) {
+            throw new UnauthorizedException('Username ID already exists');
+        }
         const user = await this.userService.create(userDTO);
         if (!user) {
             throw new UnauthorizedException();
