@@ -17,8 +17,7 @@ import { RolesGuard } from '../guards/roles.guard';
 import { StatusGuard } from '../guards/status.guard';
 import { UserRole } from '../enum/user.enum';
 import { Roles } from '../decorators/roles.decorator';
-import { EvidenceDTO } from 'src/model/evidence.dto';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor } from '@nestjs/platform-express'
 import { FileService } from '../file/file.service';
 
 @ApiBearerAuth()
@@ -46,16 +45,14 @@ export class UserController {
         return this.service.findById(id);
     }
 
-    @UseGuards(AuthGuard)
-    @Roles(UserRole.Tutor)
-    @Post('updateEvidence')
-    updateEvidence(@UserId() id: string, @Body() EvidenceDTO: EvidenceDTO) {
-        return this.service.updateEvidence(id, EvidenceDTO);
-    }
-
     @Post(':id/portfolio/upload')
     @UseInterceptors(FileInterceptor('file', { dest: '/tmp/upload' }))
     uploadPortfolio(@UserId() id: string, @UploadedFile() file) {
         return this.service.uploadPortfolio(`portfolio/${id}`, file);
+    }
+
+    @Get(':id/portfolio/download')
+    downloadPortfolio(@UserId() id: string) {
+        return this.service.downloadPortfolio(`portfolio/${id}`);
     }
 }
