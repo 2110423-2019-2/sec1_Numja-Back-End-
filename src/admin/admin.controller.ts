@@ -20,6 +20,7 @@ import { TransactionType } from '../enum/transaction.enum';
 import { TransferTransactionDTO } from 'src/transaction/transaction.dto';
 import { UserService } from 'src/user/user.service';
 import { User } from 'src/model/user.model';
+import { FileService } from 'src/file/file.service';
 
 @ApiBearerAuth()
 @ApiTags('Admin')
@@ -31,6 +32,7 @@ export class AdminController {
         private readonly service: AdminService,
         private readonly transactionService: TransactionService,
         private readonly userService: UserService,
+        private readonly fileService: FileService,
     ) {}
 
     @Patch('suspend')
@@ -68,5 +70,18 @@ export class AdminController {
     @Get('findTutors')
     findTutors(): Promise<User[]> {
         return this.userService.find({ role: UserRole.Tutor });
+    }
+
+    @Get('portfolio/list')
+    async listPortfolio() {
+        const listFiles : String[] = await this.fileService.listFiles("");
+        return listFiles.map((name : string)=>{
+            return name.split("/")[1]
+        })
+    }
+
+    @Get('portfolio/download/:id')
+    downloadPortfolio(@Param('id') id: string) {
+        return this.userService.downloadPortfolio(`portfolio/${id}`);
     }
 }
