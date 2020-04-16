@@ -3,15 +3,21 @@ import { ReturnModelType } from '@typegoose/typegoose';
 import { User } from '../model/user.model';
 import { InjectModel } from 'nestjs-typegoose';
 import { hashSync } from 'bcryptjs';
+import { ClientSession } from 'mongoose';
+import { UserRole } from '../enum/user.enum';
+import { EvidenceDTO } from 'src/model/evidence.dto';
+import { FileService } from '../file/file.service';
+import { FileDTO } from '../file/file.dto';
 
 @Injectable()
 export class UserService {
     constructor(
         @InjectModel(User) private readonly model: ReturnModelType<typeof User>,
+        private readonly fileService: FileService,
     ) {}
 
-    find(): Promise<User[]> {
-        return this.model.find().exec();
+    find(filter?: any): Promise<User[]> {
+        return this.model.find(filter).exec();
     }
 
     findById(id: string): Promise<User> {
@@ -32,10 +38,56 @@ export class UserService {
     create({ password, ...userDTO }: User): Promise<User> {
         password = hashSync(password, 12);
         const user = new this.model({ ...userDTO, password });
+        if (user.role === UserRole.Tutor) {
+            user.verified = false;
+        }
         return user.save();
     }
 
-    update(id: string, userDTO: Partial<User>): Promise<User> {
-        return this.model.findByIdAndUpdate(id, userDTO, { new: true }).exec();
+    updateTutor(id: string, verifiedStatus: boolean): Promise<User> {
+        return this.model
+            .findByIdAndUpdate(
+                id,
+                { verified: verifiedStatus },
+                {
+                    new: true,
+                },
+            )
+            .exec();
+    }
+
+    findTutor(): Promise<User[]> {
+        return this.model
+            .find({
+                role: UserRole.Tutor,
+            })
+            .exec();
+    }
+
+    updateEvidence(id: string, evidenceDTO: EvidenceDTO): Promise<User> {
+        return this.model
+            .findByIdAndUpdate(id, evidenceDTO, {
+                new: true,
+            })
+            .exec();
+    }
+
+    update(
+        id: string,
+        userDTO: Partial<User>,
+        session?: ClientSession,
+    ): Promise<User> {
+        if (!session)
+            return this.model
+                .findByIdAndUpdate(id, userDTO, { new: true })
+                .exec();
+        return this.model
+            .findByIdAndUpdate(id, userDTO, { new: true })
+            .session(session)
+            .exec();
+    }
+
+    uploadPortfolio(name: string, file: FileDTO) {
+        return this.fileService.upload(name, file);
     }
 }

@@ -4,6 +4,7 @@ import {
     TypegooseModuleOptions,
 } from 'nestjs-typegoose';
 import { JwtOptionsFactory, JwtModuleOptions } from '@nestjs/jwt';
+import { StorageOptions } from '@google-cloud/storage';
 
 @Injectable()
 export class ConfigService
@@ -29,7 +30,7 @@ export class ConfigService
         const options: JwtModuleOptions = {
             secret: this.secret,
         };
-        if (this.getEnv('NODE_ENV') === 'development') {
+        if (this.getEnv('NODE_ENV') === 'production') {
             options.signOptions = { expiresIn: '60d' };
         }
         return options;
@@ -37,5 +38,21 @@ export class ConfigService
 
     get secret(): string {
         return this.getEnv('SECRET');
+    }
+
+    get gcloudStorageOptions(): StorageOptions {
+        const buff = Buffer.from(
+            this.getEnv('GCLOUD_SERVICE_KEY_BASE64'),
+            'base64',
+        );
+        const credentials = buff.toString('ascii');
+        return {
+            projectId: this.getEnv('GOOGLE_PROJECT_ID'),
+            credentials: JSON.parse(credentials),
+        };
+    }
+
+    get gcloudBucketName(): string {
+        return this.getEnv('GCLOUD_BUCKET_NAME');
     }
 }
