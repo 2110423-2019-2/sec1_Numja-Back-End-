@@ -74,7 +74,7 @@ export class AdminController {
 
     @Get('portfolio/list')
     async listPortfolio() {
-        const listFiles: string[] = await this.fileService.listFiles('');
+        const listFiles: string[] = await this.fileService.listFiles();
         return listFiles.map((name: string) => {
             return name.split('/')[1];
         });
