@@ -76,6 +76,6 @@ export class User {
     @prop({ required: true, default: 0 })
     credit: number;
 
-    @prop({ default: true })
+    @prop({ default: false })
     verified: boolean;
 }
