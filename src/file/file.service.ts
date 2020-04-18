@@ -10,14 +10,17 @@ export class FileService {
 
     constructor(config: ConfigService) {
         const storage = new Storage(config.gcloudStorageOptions);
-        const corsConfiguration = [{maxAgeSeconds: 3600,
-            origin: ["*"]
-            // responseHeader : {
-            //     "Access-Control-Allow-Origin" : "*"
-            // }
-        }]
+        const corsConfiguration = [
+            {
+                maxAgeSeconds: 3600,
+                origin: ['*'],
+                // responseHeader : {
+                //     "Access-Control-Allow-Origin" : "*"
+                // }
+            },
+        ];
         this.bucket = storage.bucket(config.gcloudBucketName);
-        this.bucket.setCorsConfiguration(corsConfiguration)
+        this.bucket.setCorsConfiguration(corsConfiguration);
     }
 
     async getFile(name: string): Promise<FileResponse> {
