@@ -17,7 +17,7 @@ import { RolesGuard } from '../guards/roles.guard';
 import { StatusGuard } from '../guards/status.guard';
 import { UserRole } from '../enum/user.enum';
 import { Roles } from '../decorators/roles.decorator';
-import { FileInterceptor } from '@nestjs/platform-express'
+import { FileInterceptor } from '@nestjs/platform-express';
 import { FileService } from '../file/file.service';
 
 @ApiBearerAuth()

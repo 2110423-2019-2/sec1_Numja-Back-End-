@@ -1,8 +1,8 @@
 import { Controller, UseGuards, Post, Body } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from 'src/guards/auth.guard';
+import { AuthGuard } from '../guards/auth.guard';
 import { TransactionService } from './transaction.service';
-import { UserId } from 'src/decorators/user-id.decorator';
+import { UserId } from '../decorators/user-id.decorator';
 import { BaseTransactionDTO, TransferTransactionDTO } from './transaction.dto';
 import { TransactionType } from 'src/enum/transaction.enum';
 import { StatusGuard } from '../guards/status.guard';

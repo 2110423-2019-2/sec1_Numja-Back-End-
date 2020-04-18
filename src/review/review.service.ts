@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
-import { Review } from 'src/model/review.model';
+import { Review } from '../model/review.model';
 import { ReturnModelType } from '@typegoose/typegoose';
-import { UserService } from 'src/user/user.service';
+import { UserService } from '../user/user.service';
 import { CreateReviewDTO, UpdateReviewDTO } from './review.dto';
 
 @Injectable()
