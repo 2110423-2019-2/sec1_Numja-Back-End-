@@ -2,9 +2,9 @@ import * as request from 'supertest';
 import { Test, TestingModule } from '@nestjs/testing';
 // import { AuthModule } from '../auth/auth.module';
 
-import { AuthService } from '../auth/auth.service';
-import { User } from '../model/user.model';
-import { UserGender, UserRole, UserStatus } from '../enum/user.enum';
+import { AuthService } from '../src/auth/auth.service';
+import { User } from '../src/model/user.model';
+import { UserGender, UserRole, UserStatus } from '../src/enum/user.enum';
 
 let app = 'http://localhost:3000';
 const loginPayload = {
