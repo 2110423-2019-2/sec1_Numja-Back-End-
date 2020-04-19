@@ -5,7 +5,6 @@ import { InjectModel } from 'nestjs-typegoose';
 import { hashSync } from 'bcryptjs';
 import { ClientSession } from 'mongoose';
 import { UserRole } from '../enum/user.enum';
-import { EvidenceDTO } from 'src/model/evidence.dto';
 import { FileService } from '../file/file.service';
 import { FileDTO } from '../file/file.dto';
 
@@ -64,14 +63,6 @@ export class UserService {
             .exec();
     }
 
-    updateEvidence(id: string, evidenceDTO: EvidenceDTO): Promise<User> {
-        return this.model
-            .findByIdAndUpdate(id, evidenceDTO, {
-                new: true,
-            })
-            .exec();
-    }
-
     update(
         id: string,
         userDTO: Partial<User>,
@@ -89,5 +80,13 @@ export class UserService {
 
     uploadPortfolio(name: string, file: FileDTO) {
         return this.fileService.upload(name, file);
+    }
+
+    downloadPortfolio(name: string) {
+        return this.fileService.getFile(name);
+    }
+
+    deleteUser(userDTO: Partial<User>) {
+        return this.model.deleteOne(userDTO).exec();
     }
 }

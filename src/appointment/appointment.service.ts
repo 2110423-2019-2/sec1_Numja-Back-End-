@@ -5,12 +5,12 @@ import {
     BadRequestException,
 } from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
-import { Appointment } from 'src/model/appointment.model';
-import { AppointmentStatus } from 'src/enum/appointment.enum';
+import { Appointment } from '../model/appointment.model';
+import { AppointmentStatus } from '../enum/appointment.enum';
 import { ReturnModelType } from '@typegoose/typegoose';
 import { CreateAppointmentDTO, EditAppointmentDTO } from './appointment.dto';
-import { UserService } from 'src/user/user.service';
-import { UserRole } from 'src/enum/user.enum';
+import { UserService } from '../user/user.service';
+import { UserRole } from '../enum/user.enum';
 
 @Injectable()
 export class AppointmentService {

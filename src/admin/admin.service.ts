@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UserStatus } from '../enum/user.enum';
-import { UserService } from 'src/user/user.service';
+import { UserService } from '../user/user.service';
 import { InjectModel } from 'nestjs-typegoose';
 
 @Injectable()
