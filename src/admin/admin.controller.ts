@@ -87,7 +87,7 @@ export class AdminController {
     }
 
     @Delete('deleteUser')
-    deleteUser(@Body() userDTO: Partial<User>){
+    deleteUser(@Body() userDTO: Partial<User>) {
         return this.userService.deleteUser(userDTO);
     }
 }
