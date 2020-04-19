@@ -6,6 +6,7 @@ import {
     UseGuards,
     Get,
     Param,
+    Delete,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AdminService } from './admin.service';
@@ -83,5 +84,10 @@ export class AdminController {
     @Get('portfolio/download/:id')
     downloadPortfolio(@Param('id') id: string) {
         return this.userService.downloadPortfolio(`portfolio/${id}`);
+    }
+
+    @Delete('deleteUser')
+    deleteUser(@Body() userDTO: Partial<User>){
+        return this.userService.deleteUser(userDTO);
     }
 }

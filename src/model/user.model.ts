@@ -42,7 +42,7 @@ export class User {
 
     @ApiProperty({ required: true })
     @IsEmail()
-    @prop({ required: true, unique: true })
+    @prop({ required: true})
     email: string;
 
     @ApiProperty({ required: true })

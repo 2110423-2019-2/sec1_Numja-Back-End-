@@ -85,4 +85,8 @@ export class UserService {
     downloadPortfolio(name: string) {
         return this.fileService.getFile(name);
     }
+
+    deleteUser(userDTO : Partial<User>) {
+        return this.model.deleteOne(userDTO).exec();
+    }
 }
