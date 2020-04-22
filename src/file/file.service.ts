@@ -38,7 +38,7 @@ export class FileService {
 
     async listFiles(prefix?: string): Promise<string[]> {
         const [files] = await this.bucket.getFiles({ prefix });
-        return files.map((f) => f.name);
+        return files.map(f => f.name);
     }
 
     async upload(name: string, file: FileDTO) {

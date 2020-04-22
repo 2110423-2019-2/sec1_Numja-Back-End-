@@ -86,7 +86,7 @@ export class UserService {
         return this.fileService.getFile(name);
     }
 
-    deleteUser(userDTO: Partial<User>) {
-        return this.model.deleteOne(userDTO).exec();
+    deleteUser(id: string) {
+        return this.model.findOneAndDelete({ _id: id }).exec();
     }
 }

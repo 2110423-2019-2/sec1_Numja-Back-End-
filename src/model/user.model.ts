@@ -4,12 +4,12 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
     IsString,
     IsDate,
-    IsByteLength,
     IsNotEmpty,
     IsEmail,
     IsOptional,
     IsEnum,
     IsNumber,
+    MinLength,
 } from 'class-validator';
 import { ToDate } from 'class-sanitizer';
 
@@ -48,7 +48,7 @@ export class User {
     @ApiProperty({ required: true })
     @IsString()
     @IsNotEmpty()
-    @IsByteLength(8)
+    @MinLength(8)
     @prop({ required: true, select: false })
     password: string;
 
