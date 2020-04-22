@@ -10,6 +10,8 @@ import {
     IsEnum,
     IsNumber,
     MinLength,
+    Length,
+    IsISBN,
 } from 'class-validator';
 import { ToDate } from 'class-sanitizer';
 
@@ -64,9 +66,10 @@ export class User {
     gender: UserGender;
 
     @ApiProperty({ required: true })
-    @IsString()
+    @IsNumber()
+    @Length(13,13)
     @prop({ required: true })
-    ssin: string;
+    ssin: number;
 
     @ApiProperty({ enum: UserRole, required: true })
     @IsEnum(UserRole)
