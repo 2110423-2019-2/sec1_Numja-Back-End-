@@ -9,9 +9,8 @@ import {
     IsOptional,
     IsEnum,
     IsNumber,
-    MinLength,
     Length,
-    IsISBN,
+    IsNumberString
 } from 'class-validator';
 import { ToDate } from 'class-sanitizer';
 
@@ -50,7 +49,6 @@ export class User {
     @ApiProperty({ required: true })
     @IsString()
     @IsNotEmpty()
-    @MinLength(8)
     @prop({ required: true, select: false })
     password: string;
 
@@ -66,10 +64,10 @@ export class User {
     gender: UserGender;
 
     @ApiProperty({ required: true })
-    @IsNumber()
-    @Length(13,13)
+    @IsNumberString()
+    @Length(13, 13)
     @prop({ required: true })
-    ssin: number;
+    ssin: string;
 
     @ApiProperty({ enum: UserRole, required: true })
     @IsEnum(UserRole)
