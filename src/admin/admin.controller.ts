@@ -6,20 +6,22 @@ import {
     UseGuards,
     Get,
     Param,
+    Delete,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AdminService } from './admin.service';
-import { Roles } from 'src/decorators/roles.decorator';
-import { RolesGuard } from 'src/guards/roles.guard';
-import { AuthGuard } from 'src/guards/auth.guard';
+import { Roles } from '../decorators/roles.decorator';
+import { RolesGuard } from '../guards/roles.guard';
+import { AuthGuard } from '../guards/auth.guard';
 import { SuspendOrActivateDTO } from './admin.dto';
 import { UserRole } from '../enum/user.enum';
 import { UserId } from '../decorators/user-id.decorator';
 import { TransactionService } from '../transaction/transaction.service';
 import { TransactionType } from '../enum/transaction.enum';
-import { TransferTransactionDTO } from 'src/transaction/transaction.dto';
-import { UserService } from 'src/user/user.service';
-import { User } from 'src/model/user.model';
+import { TransferTransactionDTO } from '../transaction/transaction.dto';
+import { UserService } from '../user/user.service';
+import { User } from '../model/user.model';
+import { FileService } from '../file/file.service';
 
 @ApiBearerAuth()
 @ApiTags('Admin')
@@ -31,6 +33,7 @@ export class AdminController {
         private readonly service: AdminService,
         private readonly transactionService: TransactionService,
         private readonly userService: UserService,
+        private readonly fileService: FileService,
     ) {}
 
     @Patch('suspend')
@@ -68,5 +71,23 @@ export class AdminController {
     @Get('findTutors')
     findTutors(): Promise<User[]> {
         return this.userService.find({ role: UserRole.Tutor });
+    }
+
+    @Get('portfolio/list')
+    async listPortfolio() {
+        const listFiles: string[] = await this.fileService.listFiles();
+        return listFiles.map((name: string) => {
+            return name.split('/')[1];
+        });
+    }
+
+    @Get('portfolio/download/:id')
+    downloadPortfolio(@Param('id') id: string) {
+        return this.userService.downloadPortfolio(`portfolio/${id}`);
+    }
+
+    @Delete('deleteUser')
+    deleteUser(@Param('id') id: string) {
+        return this.userService.deleteUser(id);
     }
 }

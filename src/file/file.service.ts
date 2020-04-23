@@ -26,7 +26,7 @@ export class FileService {
         return { contentType, signedUrl };
     }
 
-    async listFiles(prefix: string): Promise<string[]> {
+    async listFiles(prefix?: string): Promise<string[]> {
         const [files] = await this.bucket.getFiles({ prefix });
         return files.map(f => f.name);
     }
