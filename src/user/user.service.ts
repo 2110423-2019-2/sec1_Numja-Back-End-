@@ -87,6 +87,6 @@ export class UserService {
     }
 
     deleteUser(id: string) {
-        return this.model.findOneAndDelete({ _id: id }).exec();
+        return this.model.findByIdAndDelete(id).exec();
     }
 }

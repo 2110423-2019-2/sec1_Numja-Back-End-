@@ -10,7 +10,7 @@ import {
     IsEnum,
     IsNumber,
     Length,
-    IsNumberString
+    IsNumberString,
 } from 'class-validator';
 import { ToDate } from 'class-sanitizer';
 
