@@ -133,13 +133,13 @@ export class AppointmentService {
                 !(
                     appointment.status === AppointmentStatus.Approved &&
                     appointmentDTO.status === AppointmentStatus.Cancelled &&
-                    appointmentDTO.startTime.getTime() - new Date().getTime() <
+                    appointment.startTime.getTime() - new Date().getTime() <
                         3 * MILLISECONDS_TO_DAY
                 )
             ) {
                 await this.transactionService.createTransaction({
                     type: TransactionType.TopUp,
-                    issuerId: appointment.tutor + '',
+                    issuerId: appointment.student + '',
                     receiverId: appointment.student + '',
                     amount: 0.3 * appointment.price,
                 });
