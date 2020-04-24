@@ -109,7 +109,7 @@ export class AppointmentService {
                 .exec();
     }
 
-    async updateStudentAppointmentInfo(
+    async editAppointmentInformation(
         id: string,
         userId: string,
         editAppointmentDTO: Partial<EditAppointmentDTO>,
