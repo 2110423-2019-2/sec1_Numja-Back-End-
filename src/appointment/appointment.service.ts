@@ -20,7 +20,7 @@ export class AppointmentService {
         @InjectModel(Appointment)
         private readonly model: ReturnModelType<typeof Appointment>,
         private readonly userService: UserService,
-        private readonly transactionService: TransactionService
+        private readonly transactionService: TransactionService,
     ) {}
 
     async createAppointment(
@@ -68,7 +68,7 @@ export class AppointmentService {
         else return this.model.find({ tutor: user }).exec();
     }
 
-    async updateStudentAppointmentStatus(
+    async studentFinishAppointment(
         id: string,
         userId: string,
         appointmentDTO: Partial<Appointment>,
@@ -76,21 +76,68 @@ export class AppointmentService {
         const appointment = await this.findById(id);
         if (appointment.student + '' !== userId) throw new ForbiddenException();
         if (
-            (appointment.status === AppointmentStatus.Approved &&
-                appointmentDTO.status === AppointmentStatus.Finished) ||
+            appointment.status === AppointmentStatus.Approved &&
+            appointmentDTO.status === AppointmentStatus.Finished
+        ) {
+            await this.transactionService.createTransaction({
+                type: TransactionType.Transfer,
+                issuerId: appointment.student + '',
+                senderId: appointment.student + '',
+                receiverId: appointment.tutor + '',
+                amount: 0.7 * appointment.price,
+            });
+        } else
+            throw new BadRequestException(
+                'Incorrect appointment status change',
+            );
+        return this.model
+            .findByIdAndUpdate(id, appointmentDTO, {
+                new: true,
+            })
+            .exec();
+    }
+
+    async studentCancelAppointment(
+        id: string,
+        userId: string,
+        appointmentDTO: Partial<Appointment>,
+    ): Promise<Appointment> {
+        const appointment = await this.findById(id);
+        const MILLISECONDS_TO_DAY = 1000 * 60 * 60 * 24;
+        if (appointment.student + '' !== userId) throw new ForbiddenException();
+        if (
             (appointment.status === AppointmentStatus.Approved &&
                 appointmentDTO.status === AppointmentStatus.Cancelled) ||
             (appointment.status === AppointmentStatus.Pending &&
                 appointmentDTO.status === AppointmentStatus.Cancelled)
-        )
+        ) {
+            if (
+                !(
+                    appointment.status === AppointmentStatus.Approved &&
+                    appointmentDTO.status === AppointmentStatus.Cancelled &&
+                    appointmentDTO.startTime.getTime() - new Date().getTime() <
+                        3 * MILLISECONDS_TO_DAY
+                )
+            ) {
+                await this.transactionService.createTransaction({
+                    type: TransactionType.TopUp,
+                    issuerId: appointment.tutor + '',
+                    receiverId: appointment.student + '',
+                    amount: 0.3 * appointment.price,
+                });
+            }
             return this.model
                 .findByIdAndUpdate(id, appointmentDTO, {
                     new: true,
                 })
                 .exec();
+        } else
+            throw new BadRequestException(
+                'Incorrect appointment status change',
+            );
     }
 
-    async updateTutorAppointmentStatus(
+    async tutorCancelAppointment(
         id: string,
         userId: string,
         appointmentDTO: Partial<Appointment>,
@@ -98,18 +145,63 @@ export class AppointmentService {
         const appointment = await this.findById(id);
         if (appointment.tutor + '' !== userId) throw new ForbiddenException();
         if (
-            (appointment.status === AppointmentStatus.Pending &&
-                appointmentDTO.status === AppointmentStatus.Rejected) ||
-            (appointment.status === AppointmentStatus.Pending &&
-                appointmentDTO.status === AppointmentStatus.Approved) ||
-            (appointment.status === AppointmentStatus.Approved &&
-                appointmentDTO.status === AppointmentStatus.Cancelled)
-        )
-            return this.model
-                .findByIdAndUpdate(id, appointmentDTO, {
-                    new: true,
-                })
-                .exec();
+            appointment.status === AppointmentStatus.Pending &&
+            appointmentDTO.status === AppointmentStatus.Rejected
+        ) {
+            await this.transactionService.createTransaction({
+                type: TransactionType.TopUp,
+                issuerId: appointment.tutor + '',
+                receiverId: appointment.student + '',
+                amount: 0.3 * appointment.price,
+            });
+        } else if (
+            appointment.status === AppointmentStatus.Approved &&
+            appointmentDTO.status === AppointmentStatus.Cancelled
+        ) {
+            await this.transactionService.createTransaction({
+                type: TransactionType.Transfer,
+                issuerId: appointment.tutor + '',
+                senderId: appointment.tutor + '',
+                receiverId: appointment.student + '',
+                amount: 0.3 * appointment.price,
+            });
+        } else
+            throw new BadRequestException(
+                'Incorrect appointment status change',
+            );
+        return this.model
+            .findByIdAndUpdate(id, appointmentDTO, {
+                new: true,
+            })
+            .exec();
+    }
+
+    async tutorAcceptAppointment(
+        id: string,
+        userId: string,
+        appointmentDTO: Partial<Appointment>,
+    ): Promise<Appointment> {
+        const appointment = await this.findById(id);
+        if (appointment.tutor + '' !== userId) throw new ForbiddenException();
+        if (
+            appointment.status === AppointmentStatus.Pending &&
+            appointmentDTO.status === AppointmentStatus.Approved
+        ) {
+            await this.transactionService.createTransaction({
+                type: TransactionType.TopUp,
+                issuerId: appointment.student + '',
+                receiverId: appointment.tutor + '',
+                amount: 0.3 * appointment.price,
+            });
+        } else
+            throw new BadRequestException(
+                'Incorrect appointment status change',
+            );
+        return this.model
+        .findByIdAndUpdate(id, appointmentDTO, {
+            new: true,
+        })
+        .exec();
     }
 
     async editAppointmentInformation(
@@ -125,5 +217,6 @@ export class AppointmentService {
                     new: true,
                 })
                 .exec();
+        else throw new BadRequestException('Appointment is not pending status');
     }
 }
