@@ -26,7 +26,7 @@ export class FileService {
         return { contentType, signedUrl };
     }
 
-    async listFiles(prefix: string): Promise<string[]> {
+    async listFiles(prefix?: string): Promise<string[]> {
         const [files] = await this.bucket.getFiles({ prefix });
         return files.map(f => f.name);
     }
@@ -35,7 +35,7 @@ export class FileService {
         await this.bucket.upload(file.path, {
             destination: name,
             contentType: file.mimetype,
-            resumable: true,
+            resumable: false,
         });
         removeSync(file.path);
     }

@@ -43,6 +43,7 @@ jobs:
           GCLOUD_SERVICE_KEY_BASE64=${{ secrets.STAGING_GCLOUD_SERVICE_KEY_BASE64 }}
           MONGO_URL=${{ secrets.STAGING_MONGO_URL }}
           SECRET=${{ secrets.SECRET }}
+          GCLOUD_BUCKET_NAME=${{ secrets.STAGING_GCLOUD_BUCKET_NAME }}
           EOF1
       - name: Deploy service to Cloud Run
         uses: stefda/action-cloud-run@v1.0

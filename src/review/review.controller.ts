@@ -7,14 +7,15 @@ import {
     Body,
     Patch,
 } from '@nestjs/common';
-import { RolesGuard } from 'src/guards/roles.guard';
-import { AuthGuard } from 'src/guards/auth.guard';
+import { RolesGuard } from '../guards/roles.guard';
+import { AuthGuard } from '../guards/auth.guard';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { ReviewService } from './review.service';
-import { Roles } from 'src/decorators/roles.decorator';
-import { UserRole } from 'src/enum/user.enum';
+import { Roles } from '../decorators/roles.decorator';
+import { UserRole } from '../enum/user.enum';
 import { UpdateReviewDTO, CreateReviewDTO } from './review.dto';
-import { UserId } from 'src/decorators/user-id.decorator';
+import { UserId } from '../decorators/user-id.decorator';
+import { StatusGuard } from '../guards/status.guard';
 
 @ApiBearerAuth()
 @ApiTags('Review')
@@ -23,6 +24,7 @@ import { UserId } from 'src/decorators/user-id.decorator';
 export class ReviewController {
     constructor(private readonly service: ReviewService) {}
 
+    @UseGuards(StatusGuard)
     @Roles(UserRole.Student, UserRole.Tutor)
     @Post('create')
     create(
@@ -54,6 +56,7 @@ export class ReviewController {
         return this.service.findById(id);
     }
 
+    @UseGuards(StatusGuard)
     @Patch(':id')
     update(@Param('id') id: string, @Body() updateReviewDTO: UpdateReviewDTO) {
         return this.service.update(id, updateReviewDTO);

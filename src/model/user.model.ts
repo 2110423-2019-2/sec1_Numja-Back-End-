@@ -4,10 +4,13 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
     IsString,
     IsDate,
+    IsNotEmpty,
     IsEmail,
     IsOptional,
     IsEnum,
     IsNumber,
+    Length,
+    IsNumberString,
 } from 'class-validator';
 import { ToDate } from 'class-sanitizer';
 
@@ -16,16 +19,19 @@ export class User {
 
     @ApiProperty({ required: true })
     @IsString()
+    @IsNotEmpty()
     @prop({ required: true, unique: true })
     username: string;
 
     @ApiProperty({ required: true })
     @IsString()
+    @IsNotEmpty()
     @prop({ required: true })
     firstName: string;
 
     @ApiProperty({ required: true })
     @IsString()
+    @IsNotEmpty()
     @prop({ required: true })
     lastName: string;
 
@@ -37,11 +43,12 @@ export class User {
 
     @ApiProperty({ required: true })
     @IsEmail()
-    @prop({ required: true, unique: true })
+    @prop({ required: true })
     email: string;
 
     @ApiProperty({ required: true })
     @IsString()
+    @IsNotEmpty()
     @prop({ required: true, select: false })
     password: string;
 
@@ -57,7 +64,8 @@ export class User {
     gender: UserGender;
 
     @ApiProperty({ required: true })
-    @IsString()
+    @IsNumberString()
+    @Length(13, 13)
     @prop({ required: true })
     ssin: string;
 
@@ -76,12 +84,6 @@ export class User {
     @prop({ required: true, default: 0 })
     credit: number;
 
-    @prop({ default: "" })
-    evidenceInfo?: String;
-
-    @prop({ default: "" })
-    evidenceSentDate?: Date;
-
-    @prop({ default: true })
+    @prop({ default: false })
     verified: boolean;
 }
