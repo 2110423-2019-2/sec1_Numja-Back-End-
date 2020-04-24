@@ -42,7 +42,7 @@ export class TransactionService {
             amount,
         });
 
-        if (sender.credit < amount) {
+        if (sender && sender.credit < amount) {
             throw new BadRequestException('Sender credit is insufficient');
         }
 
