@@ -16,16 +16,16 @@ export class EditAppointmentDTO {
     @ApiProperty()
     @IsString()
     location: string;
-
-    @ApiProperty()
-    @IsPositive()
-    @IsNumber()
-    @ToInt()
-    price: number;
 }
 
 export class CreateAppointmentDTO extends EditAppointmentDTO {
     @ApiProperty()
     @IsString()
     tutorId: string;
+
+    @ApiProperty()
+    @IsPositive()
+    @IsNumber()
+    @ToInt()
+    price: number;
 }
