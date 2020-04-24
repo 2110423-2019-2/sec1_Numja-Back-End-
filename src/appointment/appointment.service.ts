@@ -11,6 +11,8 @@ import { ReturnModelType } from '@typegoose/typegoose';
 import { CreateAppointmentDTO, EditAppointmentDTO } from './appointment.dto';
 import { UserService } from '../user/user.service';
 import { UserRole } from '../enum/user.enum';
+import { TransactionService } from 'src/transaction/transaction.service';
+import { TransactionType } from 'src/enum/transaction.enum';
 
 @Injectable()
 export class AppointmentService {
@@ -18,6 +20,7 @@ export class AppointmentService {
         @InjectModel(Appointment)
         private readonly model: ReturnModelType<typeof Appointment>,
         private readonly userService: UserService,
+        private readonly transactionService: TransactionService
     ) {}
 
     async createAppointment(
