@@ -11,8 +11,8 @@ import { ReturnModelType } from '@typegoose/typegoose';
 import { CreateAppointmentDTO, EditAppointmentDTO } from './appointment.dto';
 import { UserService } from '../user/user.service';
 import { UserRole } from '../enum/user.enum';
-import { TransactionService } from 'src/transaction/transaction.service';
-import { TransactionType } from 'src/enum/transaction.enum';
+import { TransactionService } from '../transaction/transaction.service';
+import { TransactionType } from '../enum/transaction.enum';
 
 @Injectable()
 export class AppointmentService {
@@ -30,10 +30,22 @@ export class AppointmentService {
         if (createAppointmentDTO.endTime < createAppointmentDTO.startTime) {
             throw new BadRequestException('Invalid start and end time');
         }
+        const studentAppointments = await this.findByUserId(studentId);
+        const money_owe: number[]= studentAppointments.map((appoinment : Appointment) => {
+            if(appoinment.status == AppointmentStatus.Pending ||  appoinment.status == AppointmentStatus.Approved ) {
+                return 0.7*appoinment.price
+            } else {
+                return 0
+            }
+        })
+        const moneyNeededToPay = money_owe.reduce((cummulative,next_num)=> cummulative+next_num,0) + createAppointmentDTO.price
+        const student = await this.userService.findById(studentId);
+        if (student.credit < moneyNeededToPay ) {
+            throw new BadRequestException('Not Enough Money ')
+        }
         const tutor = await this.userService.findById(tutorId);
         if (tutor.role !== UserRole.Tutor)
             throw new NotFoundException('Invalid tutorId');
-        const student = await this.userService.findById(studentId);
         const existedAppointment = await this.find({
             startTime: { $lt: createAppointmentDTO.endTime },
             endTime: { $gt: createAppointmentDTO.startTime },
@@ -45,6 +57,12 @@ export class AppointmentService {
         if (existedAppointment.length) {
             throw new BadRequestException('Overlapped appointment');
         }
+        await this.transactionService.createTransaction({
+            type: TransactionType.Deposit,
+            issuerId: studentId + '',
+            senderId: studentId + '',
+            amount: createAppointmentDTO.price*0.3,
+        });
         const appointmentObject = new this.model({
             ...createAppointmentDTO,
             student,
