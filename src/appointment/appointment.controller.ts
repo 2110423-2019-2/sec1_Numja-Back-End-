@@ -8,11 +8,11 @@ import {
     UseGuards,
 } from '@nestjs/common';
 import { AppointmentService } from './appointment.service';
-import { UserId } from 'src/decorators/user-id.decorator';
+import { UserId } from '../decorators/user-id.decorator';
 import { CreateAppointmentDTO, EditAppointmentDTO } from './appointment.dto';
-import { AppointmentStatus } from 'src/enum/appointment.enum';
+import { AppointmentStatus } from '../enum/appointment.enum';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from 'src/guards/auth.guard';
+import { AuthGuard } from '../guards/auth.guard';
 
 @ApiBearerAuth()
 @ApiTags('Appointment')
