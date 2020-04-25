@@ -29,9 +29,11 @@ export class TransactionService {
 
         if (senderId) {
             sender = await this.userService.findById(senderId);
+            if (!sender) throw new BadRequestException("Invalid Sender ID")
         }
         if (receiverId) {
             receiver = await this.userService.findById(receiverId);
+            if (!receiver) throw new BadRequestException("Invalid Receiver ID")
         }
 
         const transaction = new this.model({
