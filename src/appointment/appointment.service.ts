@@ -31,17 +31,26 @@ export class AppointmentService {
             throw new BadRequestException('Invalid start and end time');
         }
         const studentAppointments = await this.findByUserId(studentId);
-        const money_owe: number[]= studentAppointments.map((appoinment : Appointment) => {
-            if(appoinment.status == AppointmentStatus.Pending ||  appoinment.status == AppointmentStatus.Approved ) {
-                return 0.7*appoinment.price
-            } else {
-                return 0
-            }
-        })
-        const moneyNeededToPay = money_owe.reduce((cummulative,next_num)=> cummulative+next_num,0) + createAppointmentDTO.price
+        const money_owe: number[] = studentAppointments.map(
+            (appoinment: Appointment) => {
+                if (
+                    appoinment.status == AppointmentStatus.Pending ||
+                    appoinment.status == AppointmentStatus.Approved
+                ) {
+                    return 0.7 * appoinment.price;
+                } else {
+                    return 0;
+                }
+            },
+        );
+        const moneyNeededToPay =
+            money_owe.reduce(
+                (cummulative, next_num) => cummulative + next_num,
+                0,
+            ) + createAppointmentDTO.price;
         const student = await this.userService.findById(studentId);
-        if (student.credit < moneyNeededToPay ) {
-            throw new BadRequestException('Not Enough Money ')
+        if (student.credit < moneyNeededToPay) {
+            throw new BadRequestException('Not Enough Money ');
         }
         const tutor = await this.userService.findById(tutorId);
         if (tutor.role !== UserRole.Tutor)
@@ -61,7 +70,7 @@ export class AppointmentService {
             type: TransactionType.Deposit,
             issuerId: studentId + '',
             senderId: studentId + '',
-            amount: createAppointmentDTO.price*0.3,
+            amount: createAppointmentDTO.price * 0.3,
         });
         const appointmentObject = new this.model({
             ...createAppointmentDTO,
@@ -98,11 +107,16 @@ export class AppointmentService {
             appointmentDTO.status === AppointmentStatus.Finished
         ) {
             await this.transactionService.createTransaction({
-                type: TransactionType.Transfer,
+                type: TransactionType.FinishAppointment,
                 issuerId: appointment.student + '',
                 senderId: appointment.student + '',
-                receiverId: appointment.tutor + '',
                 amount: 0.7 * appointment.price,
+            });
+            await this.transactionService.createTransaction({
+                type: TransactionType.FinishAppointment,
+                issuerId: appointment.student + '',
+                receiverId: appointment.tutor + '',
+                amount: appointment.price,
             });
         } else
             throw new BadRequestException(
@@ -130,15 +144,20 @@ export class AppointmentService {
                 appointmentDTO.status === AppointmentStatus.Cancelled)
         ) {
             if (
-                !(
-                    appointment.status === AppointmentStatus.Approved &&
-                    appointmentDTO.status === AppointmentStatus.Cancelled &&
-                    appointment.startTime.getTime() - new Date().getTime() <
-                        3 * MILLISECONDS_TO_DAY
-                )
+                appointment.status === AppointmentStatus.Approved &&
+                appointmentDTO.status === AppointmentStatus.Cancelled &&
+                appointment.startTime.getTime() - new Date().getTime() <
+                    3 * MILLISECONDS_TO_DAY
             ) {
                 await this.transactionService.createTransaction({
-                    type: TransactionType.TopUp,
+                    type: TransactionType.Deposit,
+                    issuerId: appointment.student + '',
+                    receiverId: appointment.tutor + '',
+                    amount: 0.3 * appointment.price,
+                });
+            } else {
+                await this.transactionService.createTransaction({
+                    type: TransactionType.Refund,
                     issuerId: appointment.student + '',
                     receiverId: appointment.student + '',
                     amount: 0.3 * appointment.price,
@@ -163,23 +182,14 @@ export class AppointmentService {
         const appointment = await this.findById(id);
         if (appointment.tutor + '' !== userId) throw new ForbiddenException();
         if (
-            appointment.status === AppointmentStatus.Pending &&
-            appointmentDTO.status === AppointmentStatus.Rejected
+            (appointment.status === AppointmentStatus.Pending &&
+                appointmentDTO.status === AppointmentStatus.Rejected) ||
+            (appointment.status === AppointmentStatus.Approved &&
+                appointmentDTO.status === AppointmentStatus.Cancelled)
         ) {
             await this.transactionService.createTransaction({
-                type: TransactionType.TopUp,
+                type: TransactionType.Refund,
                 issuerId: appointment.tutor + '',
-                receiverId: appointment.student + '',
-                amount: 0.3 * appointment.price,
-            });
-        } else if (
-            appointment.status === AppointmentStatus.Approved &&
-            appointmentDTO.status === AppointmentStatus.Cancelled
-        ) {
-            await this.transactionService.createTransaction({
-                type: TransactionType.Transfer,
-                issuerId: appointment.tutor + '',
-                senderId: appointment.tutor + '',
                 receiverId: appointment.student + '',
                 amount: 0.3 * appointment.price,
             });
@@ -205,21 +215,15 @@ export class AppointmentService {
             appointment.status === AppointmentStatus.Pending &&
             appointmentDTO.status === AppointmentStatus.Approved
         ) {
-            await this.transactionService.createTransaction({
-                type: TransactionType.TopUp,
-                issuerId: appointment.student + '',
-                receiverId: appointment.tutor + '',
-                amount: 0.3 * appointment.price,
-            });
+            return this.model
+                .findByIdAndUpdate(id, appointmentDTO, {
+                    new: true,
+                })
+                .exec();
         } else
             throw new BadRequestException(
                 'Incorrect appointment status change',
             );
-        return this.model
-        .findByIdAndUpdate(id, appointmentDTO, {
-            new: true,
-        })
-        .exec();
     }
 
     async editAppointmentInformation(
