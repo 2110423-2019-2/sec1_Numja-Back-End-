@@ -233,6 +233,17 @@ export class AppointmentService {
     ): Promise<Appointment> {
         const appointment = await this.findById(id);
         if (appointment.student + '' !== userId) throw new ForbiddenException();
+        const existedAppointment = await this.find({
+            startTime: { $lt: editAppointmentDTO.endTime },
+            endTime: { $gt: editAppointmentDTO.startTime },
+            student: appointment.student,
+            status: {
+                $in: [AppointmentStatus.Approved, AppointmentStatus.Pending],
+            },
+        });
+        if (existedAppointment.length) {
+            throw new BadRequestException('Overlapped appointment');
+        }
         if (appointment.status === AppointmentStatus.Pending)
             return this.model
                 .findByIdAndUpdate(id, editAppointmentDTO, {
