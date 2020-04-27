@@ -3,6 +3,7 @@ import { AppointmentController } from './appointment.controller';
 import { AppointmentService } from './appointment.service';
 import { TypegooseModule } from 'nestjs-typegoose';
 import { Appointment } from '../model/appointment.model';
+import { TransactionModule } from 'src/transaction/transaction.module';
 
 @Module({
     imports: [
@@ -12,6 +13,7 @@ import { Appointment } from '../model/appointment.model';
                 schemaOptions: { timestamps: true },
             },
         ]),
+        TransactionModule,
     ],
     controllers: [AppointmentController],
     providers: [AppointmentService],

@@ -29,9 +29,11 @@ export class TransactionService {
 
         if (senderId) {
             sender = await this.userService.findById(senderId);
+            if (!sender) throw new BadRequestException('Invalid Sender ID');
         }
         if (receiverId) {
             receiver = await this.userService.findById(receiverId);
+            if (!receiver) throw new BadRequestException('Invalid Receiver ID');
         }
 
         const transaction = new this.model({
@@ -42,7 +44,7 @@ export class TransactionService {
             amount,
         });
 
-        if (sender.credit < amount) {
+        if (sender && sender.credit < amount) {
             throw new BadRequestException('Sender credit is insufficient');
         }
 
