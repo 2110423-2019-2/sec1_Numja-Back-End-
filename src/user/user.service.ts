@@ -5,16 +5,18 @@ import { InjectModel } from 'nestjs-typegoose';
 import { hashSync } from 'bcryptjs';
 import { ClientSession } from 'mongoose';
 import { UserRole } from '../enum/user.enum';
-import { EvidenceDTO } from 'src/model/evidence.dto';
+import { FileService } from '../file/file.service';
+import { FileDTO } from '../file/file.dto';
 
 @Injectable()
 export class UserService {
     constructor(
         @InjectModel(User) private readonly model: ReturnModelType<typeof User>,
+        private readonly fileService: FileService,
     ) {}
 
-    find(): Promise<User[]> {
-        return this.model.find().exec();
+    find(filter?: any): Promise<User[]> {
+        return this.model.find(filter).exec();
     }
 
     findById(id: string): Promise<User> {
@@ -61,18 +63,6 @@ export class UserService {
             .exec();
     }
 
-    updateEvidence(id: string, evidenceDTO: EvidenceDTO): Promise<User> {
-        return this.model
-            .findByIdAndUpdate(
-                id,
-                evidenceDTO,
-                {
-                    new: true,
-                },
-            )
-            .exec();
-    }
-
     update(
         id: string,
         userDTO: Partial<User>,
@@ -86,5 +76,17 @@ export class UserService {
             .findByIdAndUpdate(id, userDTO, { new: true })
             .session(session)
             .exec();
+    }
+
+    uploadPortfolio(name: string, file: FileDTO) {
+        return this.fileService.upload(name, file);
+    }
+
+    downloadPortfolio(name: string) {
+        return this.fileService.getFile(name);
+    }
+
+    deleteUser(id: string) {
+        return this.model.findByIdAndDelete(id).exec();
     }
 }
